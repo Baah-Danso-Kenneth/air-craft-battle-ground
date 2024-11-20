@@ -6,7 +6,7 @@ import { GAME_IMAGES } from "../components/keys/image-keys";
 import DefaultImages from '/assets/images/background/default-purple-bg.png'
 import GlobalImage from '/assets/images/other/global.png';
 import TransparentGlassImage from '/assets/images/other/glassPanel_green.png';
-import CursorImage from '/assets/images/other/glassPanel_green.png';
+import CursorImage from '/assets/images/other/cursor_white.png';
 import * as WebFontLoader from '../lib/webfontLoader.ts';
 import { KENNEY_FUTURE_NARROW, POLTWASKI_FONT } from "../components/shared/font-style";
 
