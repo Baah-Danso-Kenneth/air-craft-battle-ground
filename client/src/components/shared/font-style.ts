@@ -1,4 +1,3 @@
-const KENNEY_FUTURE_NARROW='Kenney-Future-Narrow'
 const POLTWASKI_FONT='Poltwaski'
 
 export const  WELCOME_TEXT_STYLE= Object.freeze({

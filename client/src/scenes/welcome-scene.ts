@@ -23,8 +23,8 @@ export class WelcomeScene extends Phaser.Scene{
          ease: 'Linear'
       });
 
-      const menuBgWidth = 500;
-      
+
+
 
       
 
