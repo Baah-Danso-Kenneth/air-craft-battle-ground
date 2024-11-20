@@ -25,6 +25,8 @@ export class WelcomeScene extends Phaser.Scene{
    }
 
    create(){
+      this.#selectedMenuOptions = MAIN_MENU_OPTIONS.NEW_GAME
+      this.#isContinueButtonEnabled = false;
       this.add.image(0,0,GAME_IMAGES.DEFAULT_IMAGES).setOrigin(0,0)
       const title_msg= 'aircraft battle grounds'.toUpperCase();
       this.add.text(Number(220), 20, title_msg, WELCOME_TEXT_STYLE);
@@ -70,17 +72,19 @@ export class WelcomeScene extends Phaser.Scene{
       targets: this.#mainMaenuCursorPhaserImageGameObject,
   });
 
-  this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, ()=>{
-   if(this.#selectedMenuOptions === MAIN_MENU_OPTIONS.NEW_GAME){
-      this.scene.start();
-      return;
+
+  this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+   if (this.#selectedMenuOptions === MAIN_MENU_OPTIONS.NEW_GAME) {
+       this.scene.start(SCENE_KEYS.FIRST_STAGE);
+       return;
    }
 
-   if(this.#selectedMenuOptions === MAIN_MENU_OPTIONS.OPTIONS){
-      this.scene.start();
-      return;
+   if (this.#selectedMenuOptions === MAIN_MENU_OPTIONS.OPTIONS) {
+       this.scene.start(SCENE_KEYS.OPTION_SCENE);
+       return;
    }
-  })
+});
+
 
   this.#controls = new Controls(this);
 
