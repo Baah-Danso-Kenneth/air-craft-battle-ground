@@ -1,0 +1,4 @@
+export const GAME_IMAGES = Object.freeze({
+    DEFAULT_IMAGES: 'DEFAULT_IMAGES',
+    GLOBE_IMAGES: 'GLOBE_IMAGES'
+})
