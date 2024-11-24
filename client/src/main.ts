@@ -1,10 +1,10 @@
 import Phaser from "phaser";
-import { SCENE_KEYS } from "./components/keys/scene-keys";
-import { WelcomeScene } from "./scenes/welcome-scene";
+import { GAME_SCENE_KEYS } from "./utils/scene-keys";
+import { BootScene } from "./scenes/boot-scene";
 import { PreloadScene } from "./scenes/preload-scene";
-import "./style.css";
-import { FirstStage } from "./scenes/stages/first-stage";
-import { OPtionScene } from "./scenes/option-scene";
+import { GameScene } from "./scenes/game-scene";
+import { OptionScene } from "./scenes/option-scene";
+import { WelcomeScene } from "./scenes/welcome-scene";
 
 const game = new Phaser.Game({
   type: Phaser.CANVAS,
@@ -27,9 +27,13 @@ const game = new Phaser.Game({
 },
 });
 
-game.scene.add(SCENE_KEYS.WELCOME_SCENE, WelcomeScene)
-game.scene.add(SCENE_KEYS.PRE_LOAD_SCENE, PreloadScene)
-game.scene.add(SCENE_KEYS.FIRST_STAGE, FirstStage)
-game.scene.add(SCENE_KEYS.OPTION_SCENE, OPtionScene)
-game.scene.start(SCENE_KEYS.PRE_LOAD_SCENE)
+
+game.scene.add(GAME_SCENE_KEYS.BOOT_SCENE, BootScene)
+game.scene.add(GAME_SCENE_KEYS.PRELOAD_SCENE, PreloadScene)
+game.scene.add(GAME_SCENE_KEYS.GAME_SCENE, GameScene)
+game.scene.add(GAME_SCENE_KEYS.OPTION_SCENE, OptionScene)
+game.scene.add(GAME_SCENE_KEYS.WELCOME_SCENE, WelcomeScene)
+game.scene.start(GAME_SCENE_KEYS.WELCOME_SCENE)
+
+
 
