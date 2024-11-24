@@ -9,6 +9,8 @@ import TransparentGlassImage from '/assets/images/other/glassPanel_green.png';
 import CursorImage from '/assets/images/other/cursor_white.png';
 
 import StageOneImage from '/assets/images/background/green-fusion.png';
+import playerAirCarft from '/assets/images/aircraft/plane3/plane_3_blue.png';
+
 
 import * as WebFontLoader from '../lib/webfontLoader.ts';
 import { KENNEY_FUTURE_NARROW, POLTWASKI_FONT } from "../components/shared/font-style";
@@ -28,6 +30,9 @@ export class PreloadScene extends Phaser.Scene{
       this.load.image(GAME_IMAGES.TRANSPARENT_GLASS_CONTAINER_IMAGE, TransparentGlassImage)
       this.load.image(GAME_IMAGES.CURSOR_IMAGES, CursorImage)
       this.load.image(GAME_IMAGES.STAGE_ONE,  StageOneImage)
+      this.load.image(GAME_IMAGES.PLAYER_SHIP,  playerAirCarft)
+
+
       console.log(`${PreloadScene.name} : preloaded`)
 
 
@@ -43,6 +48,6 @@ export class PreloadScene extends Phaser.Scene{
    } 
    
    create(){
-      this.scene.start(SCENE_KEYS.WELCOME_SCENE)
+      this.scene.start(SCENE_KEYS.FIRST_STAGE)
    }
 }

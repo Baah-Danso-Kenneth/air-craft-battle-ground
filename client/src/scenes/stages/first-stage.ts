@@ -14,13 +14,15 @@ export class FirstStage extends Phaser.Scene {
     console.log(`${FirstStage.name} initialized`)
     this.background = new Background(this);
     this.background.showBackground(GAME_IMAGES.STAGE_ONE);
+
+    const ship1 = this.add.image(120, Number(this.game.config.height) / 2, GAME_IMAGES.PLAYER_SHIP).setScale(0.1)
     
   }
 
 
-  update(time: number): void {
+  update(_time: number): void {
       if(this.background){
-        this.background.moveBackground(time=0.5);
+        this.background.moveBackground(_time=1);
       }
   }
 }
