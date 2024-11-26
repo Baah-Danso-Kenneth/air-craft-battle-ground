@@ -21,7 +21,7 @@ const game = new Phaser.Game({
     default: 'arcade',
     arcade: {
       gravity: {y:0, x: 0},
-      debug: false
+      debug: true
     }
 
 },
@@ -33,7 +33,7 @@ game.scene.add(GAME_SCENE_KEYS.PRELOAD_SCENE, PreloadScene)
 game.scene.add(GAME_SCENE_KEYS.GAME_SCENE, GameScene)
 game.scene.add(GAME_SCENE_KEYS.OPTION_SCENE, OptionScene)
 game.scene.add(GAME_SCENE_KEYS.WELCOME_SCENE, WelcomeScene)
-game.scene.start(GAME_SCENE_KEYS.WELCOME_SCENE)
+game.scene.start(GAME_SCENE_KEYS.BOOT_SCENE)
 
 
 

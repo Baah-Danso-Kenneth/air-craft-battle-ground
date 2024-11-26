@@ -5,4 +5,5 @@ export class WelcomeScene extends Phaser.Scene{
         super({key: GAME_SCENE_KEYS.WELCOME_SCENE})
     }
 
+    
 }
