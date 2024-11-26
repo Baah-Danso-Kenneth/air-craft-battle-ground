@@ -31,13 +31,6 @@ export class KeyboardInputComponent extends InputComponent{
         this._left = this.#cursorKeys.left.isDown;
         this._shoot = this.#cursorKeys.space.isDown;
     
-        console.log('Input Status:', {
-            up: this._up,
-            down: this._down,
-            right: this._right,
-            left: this._left,
-            shoot: this._shoot,
-        });
     }
     
 }

@@ -25,6 +25,10 @@ export class InputComponent {
         return this._down ?? false;
     }
 
+    get shootIsDown(){
+        return this._shoot ?? false
+    }
+
     reset() {
         this._up = false;
         this._down = false;
