@@ -1,0 +1,16 @@
+[
+
+{
+  "key": "ship-flame",
+  "frameRate": 48,
+  "repeat": -1,
+  "assetKey": "ship-flame"
+},
+{
+  "key": "bullet",
+  "frameRate": 12,
+  "repeat": -1,
+  "assetKey": "bullet"
+}
+
+]

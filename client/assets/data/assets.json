@@ -1,0 +1,49 @@
+[
+    {
+        "path": "assets/images/fozzle",
+        "files": [
+            {
+                "type": "image",
+                "key": "fighter",
+                "url": "fighter.png"
+            },
+            {   "type": "image",
+                "key": "purple-bg",
+                "url": "purple-bg.png"
+            },
+            {
+                "type": "image",
+                "key": "plane1",
+                "url": "plane_2_blue.png"
+            },
+            {
+                "type": "image",
+                "key": "plane2",
+                "url": "plane_2_red.png"
+            },
+            {
+                "type": "image",
+                "key": "plane3",
+                "url": "plane_2_green.png"
+            },
+            {
+                "type": "image",
+                "key": "plane4",
+                "url": "plane_2_yellow.png"
+            },
+
+            {
+                "type": "spritesheet",
+                "key": "ship-flame",
+                "url": "fire_split.png",
+                "frameConfig": {"frameWidth": 48, "frameHeight": 48}
+            },
+            {
+                "type": "spritesheet",
+                "key": "bullet",
+                "url": "bullet.png",
+                "frameConfig": { "frameWidth": 32, "frameHeight": 32 }
+              }
+        ]
+    }
+]
