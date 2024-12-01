@@ -1,5 +1,6 @@
-import { InputComponent } from "./input-component";
-import * as CONFIG from '../../config.js'
+
+import * as CONFIG from '../../../shared/config.js'
+import { InputComponent } from '../components/input/input-component.js';
 
 
 export class BotScoutInputComponent extends InputComponent {
@@ -7,7 +8,7 @@ export class BotScoutInputComponent extends InputComponent {
     #gameObject;
     #startX
     #maxXMovement;
-    constructor(gameObject){
+    constructor(gameObject: any){
         super();
         this.#gameObject = gameObject
         this.#startX = this.#gameObject.x
@@ -18,7 +19,7 @@ export class BotScoutInputComponent extends InputComponent {
     }
 
 
-    set startX(val){
+    set startX(val:any){
         this.#startX = val;
     }
 

@@ -1,23 +1,30 @@
+import { VerticalMovementComponent } from "../../components/movements/vertical-movement";
+import { BotFightScoutInputComponent } from "../../utils/bot-fighter-component";
+import * as CONFIG from '../../../../shared/config'
+import { HealthComponent } from "../../components/health/health";
+import { ColliderComponent } from "../../components/collider/collider-component";
+import { CUSTOM_EVENTS } from "../../../../shared/config";
 
 
 export class FigtherEnemy extends Phaser.GameObjects.Container{
-    #weaponComponent;
+    #weaponComponent: any;
     #isInitialized;
-    #inputComponent;
+    #inputComponent: any;
     #shipSprite
     #shipEngineSprite
-    #verticalMovementComponent
-    #healthComponent
-    #colliderComponent;
-    #eventBusComponent
+    #verticalMovementComponent: any
+    #healthComponent: any
+    #colliderComponent: any;
+    #eventBusComponent: any
 
-    constructor(scene, x, y){
+    constructor(scene:any, x:any, y:any){
         super(scene,x,y, []);
         this.#isInitialized=false
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this)
-        this.body.setSize(24,24)
-        this.body.setOffset(-12,-12)
+        const body = this.body as Phaser.Physics.Arcade.Body;
+        body.setSize(24,24)
+        body.setOffset(-12,-12)
    
    
 
@@ -59,25 +66,25 @@ export class FigtherEnemy extends Phaser.GameObjects.Container{
         return 'fighter_destroy'
     }
 
-    // init(eventBusComponent){
-    //     this.#eventBusComponent = eventBusComponent
-    //     this.#inputComponent = new BotFightScoutInputComponent()
-    //     this.#verticalMovementComponent = new VerticalMovementComponent(this, this.#inputComponent, CONFIG.FIGHT_MOVEMENT_VERTICAL_VELOCITY)
+    init(eventBusComponent:any){
+        this.#eventBusComponent = eventBusComponent
+        this.#inputComponent = new BotFightScoutInputComponent()
+        this.#verticalMovementComponent = new VerticalMovementComponent(this, this.#inputComponent, CONFIG.FIGHT_MOVEMENT_VERTICAL_VELOCITY)
 
-    //     this.#weaponComponent = new WeaponComponent(this, this.#inputComponent,{
-    //         speed: CONFIG.ENEMY_FIGHTER_BULLET_SPEED,
-    //         interval: CONFIG.ENEMY_FIGHTER_BULLET_INTERVAL,
-    //         lifespan: CONFIG.ENEMY_FIGHTER_BULLET_LIFESPAN,
-    //         maxCount: CONFIG.ENEMY_FIGHTER_BULLET_MAX_COUNT,
-    //         yOffset: 10,
-    //         flipY: false,
-    //     }, this.#eventBusComponent)
+        this.#weaponComponent = new this.WeaponComponent(this, this.#inputComponent,{
+            speed: CONFIG.ENEMY_FIGHTER_BULLET_SPEED,
+            interval: CONFIG.ENEMY_FIGHTER_BULLET_INTERVAL,
+            lifespan: CONFIG.ENEMY_FIGHTER_BULLET_LIFESPAN,
+            maxCount: CONFIG.ENEMY_FIGHTER_BULLET_MAX_COUNT,
+            yOffset: 10,
+            flipY: false,
+        }, this.#eventBusComponent)
 
-    //     this.#healthComponent = new HealthComponent(CONFIG.PLAYER_HEALTH)
-    //     this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent)
-    //     this.#eventBusComponent.emit(CUSTOM_EVENTS.ENEMY_INIT, this)
-    //     this.#isInitialized=true;
-    // }
+        this.#healthComponent = new HealthComponent(CONFIG.ENEMY_SCOUT_HEALTH)
+        this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent)
+        this.#eventBusComponent.emit(CUSTOM_EVENTS.ENEMY_INIT, this)
+        this.#isInitialized=true;
+    }
 
 
     reset(){
@@ -87,7 +94,7 @@ export class FigtherEnemy extends Phaser.GameObjects.Container{
         this.#verticalMovementComponent.reset()
     }
 
-    update(ts: any,dt: any){
+    update(dt:any){
         if(!this.#isInitialized){
             return
         }

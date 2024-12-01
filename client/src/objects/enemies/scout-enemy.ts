@@ -1,24 +1,31 @@
+import * as CONFIG from '../../../../shared/config.js';
+import { HealthComponent } from "../../components/health/health.js";
+import { ColliderComponent } from "../../components/collider/collider-component.js";
+import { BotScoutInputComponent } from '../../utils/bot-scout-component.js';
+import { VerticalMovementComponent } from '../../components/movements/vertical-movement.js';
+import { CUSTOM_EVENTS } from '../../../../shared/config.js';
 
 
 
 export class ScoutEnemy extends Phaser.GameObjects.Container{
-    #horizontalMovementComponent;
+    #horizontalMovementComponent: any;
     #isInitialized;
-    #inputComponent;
+    #inputComponent: any;
     #shipSprite
     #shipEngineSprite
-    #healthComponent
-    #colliderComponent;
-    #eventBusComponent
-    #verticalMovementComponent
+    #healthComponent: any
+    #colliderComponent: any;
+    #eventBusComponent: any
+    #verticalMovementComponent: any
 
-    constructor(scene, x, y){
+    constructor(scene: any, x: any, y: any){
         super(scene,x,y, []);
 
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this)
-        this.body.setSize(24,24)
-        this.body.setOffset(-12,-12)
+        const body = this.body as Phaser.Physics.Arcade.Body;
+        body.setSize(24,24)
+        body.setOffset(-12,-12)
    
    
         this.#isInitialized=false
@@ -45,13 +52,13 @@ export class ScoutEnemy extends Phaser.GameObjects.Container{
         return this.#healthComponent;
     }
 
-    init(eventBusComponent){
+    init(eventBusComponent: any){
         this.#eventBusComponent = eventBusComponent
         this.#inputComponent = new BotScoutInputComponent(this)
-        this.#verticalMovementComponent = new VerticalMovementComponent(this, this.#inputComponent, CONFIG.ENEMY_MOVEMENT_VERTICAL_VELOCITY)
-        this.#horizontalMovementComponent = new HorizontalMovementComponent(this, this.#inputComponent, CONFIG.SCOUT_MOVEMENT_HORIZONTAL_VELOCITY)
+        this.#verticalMovementComponent = new VerticalMovementComponent(this, this.#inputComponent, CONFIG.FIGHT_MOVEMENT_VERTICAL_VELOCITY)
+        // this.#horizontalMovementComponent = new VerticalMovementComponent(this, this.#inputComponent, CONFIG.SCOUT_MOVEMENT_HORIZONTAL_VELOCITY)
 
-        this.#healthComponent = new HealthComponent(CONFIG.PLAYER_HEALTH)
+        this.#healthComponent = new HealthComponent(CONFIG.ENEMY_SCOUT_HEALTH)
         this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent)
         this.#eventBusComponent.emit(CUSTOM_EVENTS.ENEMY_INIT, this)
         this.#isInitialized=true
@@ -75,7 +82,7 @@ export class ScoutEnemy extends Phaser.GameObjects.Container{
     }
 
 
-    update(ts,dt){
+    update(ts: any,dt: any){
         if(!this.#isInitialized){
             return
         }
