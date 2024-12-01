@@ -1,4 +1,5 @@
-import { InputComponent } from "./input-component";
+import { InputComponent } from "../components/input/input-component";
+
 
 export class BotFightScoutInputComponent extends InputComponent {
     constructor(){

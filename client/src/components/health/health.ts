@@ -2,7 +2,7 @@ export class HealthComponent{
     #startingLife;
     #currentLife;
     #isDead;
-    constructor(life){
+    constructor(life:any){
         this.#startingLife = life
         this.#currentLife = life
         this.#isDead = false
