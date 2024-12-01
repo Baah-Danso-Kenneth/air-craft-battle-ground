@@ -10,5 +10,8 @@
   },
   "devDependencies": {
     "vite": "^6.0.1"
+  },
+  "dependencies": {
+    "phaser": "^3.87.0"
   }
 }
