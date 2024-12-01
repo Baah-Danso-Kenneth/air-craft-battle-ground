@@ -1,4 +1,5 @@
-import { CUSTOM_EVENTS } from "../events/event-bus-component"
+import { CUSTOM_EVENTS } from "../../../../shared/config"
+
 
 export class EnemySpawnerComponent{
     #scene
@@ -7,13 +8,13 @@ export class EnemySpawnerComponent{
     #group
     #disableSpawning
 
-    constructor(scene, enemyClas, spawnConfig,eventBusComponent){
+    constructor(scene: Phaser.Scene, enemyClass:any, spawnConfig:any,eventBusComponent:any){
         this.#scene = scene;
         this.#group = this.#scene.add.group({
             name: `${this.constructor.name}-${Phaser.Math.RND.uuid()}`,
-            classType: enemyClas,
+            classType: enemyClass,
             runChildUpdate: true,
-            createCallback:(enemy)=>{
+            createCallback:(enemy:any)=>{
                 console.log(enemy)
                 enemy.init(eventBusComponent)
             }
@@ -43,7 +44,7 @@ get phaserGroup(){
     return this.#group;
 }
 
-update(ts,dt){
+update(ts:any,dt:any){
     if(this.#disableSpawning){
         return;
     }
@@ -60,8 +61,8 @@ update(ts,dt){
 
 }
 
-worldStep(delta){
-    this.#group.getChildren().forEach((enemy)=>{
+worldStep(){
+    this.#group.getChildren().forEach((enemy:any)=>{
         if(!enemy.active){
             return;
         }

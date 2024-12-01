@@ -1,12 +1,12 @@
-import { CUSTOM_EVENTS } from '../../components/events/event-bus-component.js';
-import * as CONFIG from '../../config.js'
+import { CUSTOM_EVENTS } from '../../../../shared/config.js';
+import * as CONFIG from '../../../../shared/config.js'
 
 
 export class Lives extends Phaser.GameObjects.Container{
     #lives;
     #eventBusComponent;
 
-    constructor(scene, eventBusComponent){
+    constructor(scene:any, eventBusComponent:any){
         super(scene, 5, scene.scale.height - 30, []);
         this.#eventBusComponent = eventBusComponent;
         this.#lives = CONFIG.PLAYER_LIVES;

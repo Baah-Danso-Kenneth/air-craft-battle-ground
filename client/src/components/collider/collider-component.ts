@@ -1,10 +1,11 @@
-import { CUSTOM_EVENTS } from "../events/event-bus-component";
+import { CUSTOM_EVENTS } from "../../../../shared/config";
+
 
 export class ColliderComponent{
     #healthComponent
     #eventComponent
 
-    constructor(lifeComponent, eventComponent){
+    constructor(lifeComponent:any, eventComponent:any){
         this.#healthComponent=lifeComponent
         this.#eventComponent=eventComponent
     }
