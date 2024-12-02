@@ -59,5 +59,11 @@
     "frameRate": 8,
     "repeat": -1,
     "assetKey": "bg3"
+  },
+  {
+    "key":"flameEffect",
+    "frameRate": 10,
+    "repeat": -1,
+    "assetKey": "flamey"
   }
 ]
