@@ -77,8 +77,8 @@ export class FigtherEnemy extends Phaser.GameObjects.Container{
             interval: CONFIG.ENEMY_FIGHTER_BULLET_INTERVAL,
             lifespan: CONFIG.ENEMY_FIGHTER_BULLET_LIFESPAN,
             maxCount: CONFIG.ENEMY_FIGHTER_BULLET_MAX_COUNT,
-            yOffset: 10,
-            flipY: false,
+            yOffset: 50,
+            
         }, this.#eventBusComponent)
 
         this.#healthComponent = new HealthComponent(CONFIG.PLAYER_HEALTH)

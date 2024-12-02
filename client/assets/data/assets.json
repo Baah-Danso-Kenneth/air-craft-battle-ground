@@ -9,6 +9,21 @@
       },
       {
         "type": "image",
+        "key": "player_ship",
+        "url": "player_ship.png"
+      },
+      {
+        "type": "image",
+        "key": "flamey",
+        "url": "flame.png"
+      },
+      {
+        "type": "image",
+        "key": "green_bg",
+        "url": "green_bg.png"
+      },
+      {
+        "type": "image",
         "key": "fighter",
         "url": "fighter.png"
       },

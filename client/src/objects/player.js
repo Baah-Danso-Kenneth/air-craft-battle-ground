@@ -10,7 +10,6 @@ import { CUSTOM_EVENTS } from "../components/events/event-bus-component.js";
 
 export class Player extends Phaser.GameObjects.Container{
     #horizontalMovementComponent;
-    // #verticalMovementComponent;
     #weaponComponent
     #healthComponent
     #colliderComponent;
@@ -27,16 +26,15 @@ export class Player extends Phaser.GameObjects.Container{
         this.#eventBusComponent = eventBusComponent
         this.scene.add.existing(this);
         this.scene.physics.add.existing(this)
-        this.body.setSize(24,24)
-        this.body.setOffset(-12,-12)
+        this.body.setSize(200,200)
+        this.body.setOffset(-100,-30)
         this.body.setCollideWorldBounds(true)
         this.setDepth(2)
 
-        this.#shipSprite = scene.add.sprite(0,0,'ship');
-        this.#shipEngineSprite = scene.add.sprite(0,0,'ship_engine');
-        this.#shipEngineThrusterSprite = scene.add.sprite(0,0,'ship_engine_thruster');
-        this.#shipEngineThrusterSprite.play('ship_engine_thruster')
-        this.add([this.#shipEngineThrusterSprite, this.#shipEngineSprite, this.#shipSprite]);
+        this.#shipSprite = scene.add.image(0, 0,'fire-ship')
+        this.#shipEngineThrusterSprite = scene.add.sprite(scene.scale.width / 2, 540,'flamey').setScale(0.4);
+        this.#shipEngineThrusterSprite.play('flameEffect')
+        this.add([this.#shipEngineSprite,this.#shipSprite]);
 
         this.#keyboardInputComponent = new KeyboardInputComponent(this.scene);
         this.#horizontalMovementComponent = new HorizontalMovementComponent(this, this.#keyboardInputComponent, CONFIG.PLAYER_MOVEMENT_HORIZONTAL_VELOCITY)
@@ -49,7 +47,6 @@ export class Player extends Phaser.GameObjects.Container{
             yOffset: -20,
             flipY: false,
         }, this.#eventBusComponent)
-        // this.#verticalMovementComponent = new VerticalMovementComponent(this, this.#keyboardInputComponent, CONFIG.PLAYER_MOVEMENT_HORIZONTAL_VELOCITY)
         
         this.#healthComponent = new HealthComponent(CONFIG.PLAYER_HEALTH)
         this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent)

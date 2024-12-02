@@ -11,6 +11,7 @@ import { AudioManager } from "../objects/audio-manager.js";
 
 
 export class GameScene extends Phaser.Scene{
+    #background
     constructor(){
         super({key: 'GameScene'})
     }
@@ -23,10 +24,7 @@ export class GameScene extends Phaser.Scene{
 
     create(){
 
-        this.add.sprite(0,0,'bg1',0).setOrigin(0,1).setAlpha(0.7).setAngle(90).setScale(1,1.25).play('bg1');
-        this.add.sprite(0,0,'bg2',0).setOrigin(0,1).setAlpha(0.7).setAngle(90).setScale(1,1.25).play('bg2');
-        this.add.sprite(0,0,'bg3',0).setOrigin(0,1).setAlpha(0.7).setAngle(90).setScale(1,1.25).play('b3');
-        
+        this.#background = this.add.tileSprite(0,0, 1024, 576, 'green_bg').setOrigin(0,0) 
         const eventBusComponents = new EventBusComponent();
         const player = new Player(this, eventBusComponents);
         const score = new Score(this, eventBusComponents)
@@ -98,5 +96,10 @@ export class GameScene extends Phaser.Scene{
             enemyGameObject.colliderComponent.collideWithEnemyProjectile();
 
         });
+    }
+
+
+    update(){
+        this.#background.tilePositionY -=1;
     }
 }
