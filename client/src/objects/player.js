@@ -10,7 +10,6 @@ import { CUSTOM_EVENTS } from "../components/events/event-bus-component.js";
 
 export class Player extends Phaser.GameObjects.Container{
     #horizontalMovementComponent;
-    // #verticalMovementComponent;
     #weaponComponent
     #healthComponent
     #colliderComponent;
@@ -49,7 +48,6 @@ export class Player extends Phaser.GameObjects.Container{
             yOffset: -20,
             flipY: false,
         }, this.#eventBusComponent)
-        // this.#verticalMovementComponent = new VerticalMovementComponent(this, this.#keyboardInputComponent, CONFIG.PLAYER_MOVEMENT_HORIZONTAL_VELOCITY)
         
         this.#healthComponent = new HealthComponent(CONFIG.PLAYER_HEALTH)
         this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent)

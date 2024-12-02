@@ -6,26 +6,25 @@ import { BootScene } from "./src/scenes/boot-scene";
 
 
 const game = new Phaser.Game({
-    type: Phaser.CANVAS,
-    roundPixels: true,
-    pixelArt: true,
-    scale: {
-      parent: 'game-container',
-      width: 450,
-      height: 640,
-      autoCenter: Phaser.Scale.CENTER_BOTH,
-      mode: Phaser.Scale.HEIGHT_CONTROLS_WIDTH,
-    },
-    backgroundColor: '#000000',
-    physics: {
-      default: 'arcade',
-      arcade: {
-        gravity: { y: 0, x: 0 },
-        debug: false,
-      },
-    },
-  });
-  
+  type: Phaser.CANVAS,
+  scale:{
+      parent:'game-container',
+      width: 1024,
+      height: 576,
+      mode: Phaser.Scale.FIT,
+      autoCenter: Phaser.Scale.CENTER_BOTH
+  },
+  pixelArt: false,
+  backgroundColor: '#000000',
+  physics:{
+    default: 'arcade',
+    arcade: {
+      gravity: {y:0, x: 0},
+      debug: true
+    }
+
+},
+});
   game.scene.add('BootScene', BootScene);
   game.scene.add('PreloadScene', PreloadScene);
   game.scene.add('GameScene', GameScene);
