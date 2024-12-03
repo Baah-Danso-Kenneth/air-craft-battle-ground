@@ -3,6 +3,7 @@ import * as CONFIG from '../../../../shared/config.js'
 import { BotScoutInputComponent } from "../../components/inputs/bot-scout-input-components.js";
 import { VerticalMovementComponent } from "../../components/movements/vertical-component.js";
 import { BotFighterInputComponent } from "../../components/inputs/bot-fighter-scout-input-component.js";
+import { WeaponComponent } from "../../components/weapon/weapon-component.js";
 
 
 
@@ -11,6 +12,7 @@ export class FightEnemy extends Phaser.GameObjects.Container{
   #shipEngine
   #inputComponent
   #verticalMovementComponent
+  #weaponComponent
 
 
   constructor(scene,x,y) {
@@ -27,6 +29,14 @@ export class FightEnemy extends Phaser.GameObjects.Container{
     this.add([this.#shipEngine,this.#enemyShip])
 
     this.#inputComponent = new BotFighterInputComponent();
+    this.#weaponComponent = new WeaponComponent(this,this.#inputComponent,{
+        maxCount: CONFIG.ENEMY_FIGHTER_BULLET_MAX_COUNT,
+        yOffset: 70,
+        speed:CONFIG.ENEMY_FIGHTER_BULLET_SPEED,
+        flipY: true,
+        lifeSpan:CONFIG.ENEMY_FIGHTER_BULLET_LIFESPAN,
+        interval: CONFIG.PLAYER_BULLET_INTERVAL,
+    })
 
     this.#verticalMovementComponent = new VerticalMovementComponent(
       this,
@@ -44,6 +54,7 @@ export class FightEnemy extends Phaser.GameObjects.Container{
   update(ts,dt){
     this.#inputComponent.update();
     this.#verticalMovementComponent.update()
+    this.#weaponComponent.update(dt)
   }
 
 }
