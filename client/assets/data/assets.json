@@ -9,12 +9,17 @@
       },
       {
         "type": "image",
+        "key": "attacker_1",
+        "url": "attacker_1.png"
+      },
+      {
+        "type": "image",
         "key": "player_ship",
         "url": "player_ship.png"
       },
       {
         "type": "image",
-        "key": "flamey",
+        "key": "flame",
         "url": "flame.png"
       },
       {
@@ -31,6 +36,11 @@
         "type": "image",
         "key": "ship_engine",
         "url": "ship_engine.png"
+      },
+      {
+        "type": "image",
+        "key": "attack_ship2",
+        "url": "attack_ship2.png"
       },
       {
         "type": "spritesheet",
@@ -68,29 +78,18 @@
         "url": "fighter_destroy.png",
         "frameConfig": { "frameWidth": 64, "frameHeight": 64 }
       },
-      {
-        "type": "spritesheet",
-        "key": "bg1",
-        "url": "bg1.png",
-        "frameConfig": { "frameWidth": 640, "frameHeight": 360 }
-      },
-      {
-        "type": "spritesheet",
-        "key": "bg2",
-        "url": "bg2.png",
-        "frameConfig": { "frameWidth": 640, "frameHeight": 360 }
-      },
-      {
-        "type": "spritesheet",
-        "key": "bg3",
-        "url": "bg3.png",
-        "frameConfig": { "frameWidth": 640, "frameHeight": 360 }
-      },
+
       {
         "type": "spritesheet",
         "key": "ship",
         "url": "ship.png",
         "frameConfig": { "frameWidth": 48, "frameHeight": 48 }
+      },
+      {
+        "type": "spritesheet",
+        "key": "flames_fire",
+        "url": "flames_fire.png",
+        "frameConfig": {"frameWidth":64, "frameHeight":64}
       }
     ]
   },

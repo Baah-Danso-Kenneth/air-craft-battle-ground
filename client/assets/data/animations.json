@@ -12,6 +12,12 @@
     "assetKey": "fighter_engine"
   },
   {
+    "key": "flameEffect",
+    "frameRate": 12,
+    "repeat": -1,
+    "assetKey": "flames_fire"
+  },
+  {
     "key": "scout_engine",
     "frameRate": 12,
     "repeat": -1,
@@ -41,29 +47,5 @@
     "frameRate": 12,
     "repeat": 0,
     "assetKey": "fighter_destroy"
-  },
-  {
-    "key": "bg1",
-    "frameRate": 8,
-    "repeat": -1,
-    "assetKey": "bg1"
-  },
-  {
-    "key": "bg2",
-    "frameRate": 8,
-    "repeat": -1,
-    "assetKey": "bg2"
-  },
-  {
-    "key": "bg3",
-    "frameRate": 8,
-    "repeat": -1,
-    "assetKey": "bg3"
-  },
-  {
-    "key":"flameEffect",
-    "frameRate": 10,
-    "repeat": -1,
-    "assetKey": "flamey"
   }
 ]
