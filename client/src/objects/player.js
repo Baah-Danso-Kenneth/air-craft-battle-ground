@@ -1,123 +1,54 @@
-import { HealthComponent } from "../components/health/health.js";
-import { KeyboardInputComponent } from "../components/input/keyboard-input-container.js";
-import { HorizontalMovementComponent } from "../components/movement/horizontal-movement-componet";
-import { VerticalMovementComponent } from "../components/movement/vertical-movement-component.js";
-import { WeaponComponent } from "../components/weapon/weapon-component.js";
-import * as CONFIG from '../config.js'
-import { ColliderComponent } from "../components/collider/collider-component.js";
-import { CUSTOM_EVENTS } from "../components/events/event-bus-component.js";
+import { KeyboardInputComponent } from "../components/inputs/keyboard-component";
+import * as CONFIG from '../../../shared/config.js'
+import { VerticalMovementComponent } from "../components/movements/vertical-component.js";
+import { HorizontalMovementComponent } from "../components/movements/horizontal-movement.js";
 
 
-export class Player extends Phaser.GameObjects.Container{
-    #horizontalMovementComponent;
-    #weaponComponent
-    #healthComponent
-    #colliderComponent;
-    #eventBusComponent
+export class Player extends Phaser.GameObjects.Container {
+  #playerShip
+  #shipEngine
+  #keyboardInputComponent
+  #horizontalMovementComponent
+  #verticalMovementComponent
 
-    #keyboardInputComponent;
-    #shipSprite
-    #shipEngineThrusterSprite
-    #shipEngineSprite
-    // #spawn
-
-    constructor(scene, eventBusComponent){
-        super(scene, scene.scale.width / 2, scene.scale.height - 32, []);
-        this.#eventBusComponent = eventBusComponent
-        this.scene.add.existing(this);
-        this.scene.physics.add.existing(this)
-        this.body.setSize(200,200)
-        this.body.setOffset(-100,-30)
-        this.body.setCollideWorldBounds(true)
-        this.setDepth(2)
-
-        this.#shipSprite = scene.add.image(0, 0,'fire-ship')
-        this.#shipEngineThrusterSprite = scene.add.sprite(scene.scale.width / 2, 540,'flamey').setScale(0.4);
-        this.#shipEngineThrusterSprite.play('flameEffect')
-        this.add([this.#shipEngineSprite,this.#shipSprite]);
-
-        this.#keyboardInputComponent = new KeyboardInputComponent(this.scene);
-        this.#horizontalMovementComponent = new HorizontalMovementComponent(this, this.#keyboardInputComponent, CONFIG.PLAYER_MOVEMENT_HORIZONTAL_VELOCITY)
-
-        this.#weaponComponent = new WeaponComponent(this, this.#keyboardInputComponent,{
-            speed: CONFIG.PLAYER_BULLET_SPEED,
-            interval: CONFIG.PLAYER_BULLET_INTERVAL,
-            lifespan: CONFIG.BULLET_LIFE_SPAN,
-            maxCount: 2,
-            yOffset: -20,
-            flipY: false,
-        }, this.#eventBusComponent)
-        
-        this.#healthComponent = new HealthComponent(CONFIG.PLAYER_HEALTH)
-        this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent)
-        this.#hide()
-        this.#eventBusComponent.on(CUSTOM_EVENTS.PLAYER_SPAWN, this.#spawn, this)
-
-        this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
-        this.once(Phaser.GameObjects.Events.DESTROY, ()=>{
-            this.scene.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);
-        }, this)
+  constructor(scene) {
+    super(scene, scene.scale.width / 2, scene.scale.height - 95, []);
+    this.scene.add.existing(this)
+    this.scene.physics.add.existing(this)
+    this.body.setSize(24,24)
+    this.body.setOffset(-12,-12)
+    this.body.setCollideWorldBounds(true)
+    this.setDepth(2)
 
 
-    }
 
-    get weaponGameObjectGroup(){
-        return this.#weaponComponent.bulletGroup
-    }
+    this.#playerShip = scene.add.image(0,0, 'player_ship').setScale(0.5)
+    this.#shipEngine = scene.add.sprite(0,65, 'flames_fire').setScale(0.8)
+    this.#shipEngine.play('flameEffect')
 
-    get WeaponComponent(){
-        return this.#weaponComponent;
-    }
+    this.add([this.#shipEngine,this.#playerShip])
 
-    get colliderComponent(){
-        return this.#colliderComponent;
-    }
+    this.#keyboardInputComponent = new KeyboardInputComponent(this.scene)
 
-
-    get healthComponent(){
-        return this.#healthComponent;
-    }
+    this.#horizontalMovementComponent = new HorizontalMovementComponent(
+        this,
+        this.#keyboardInputComponent,
+        CONFIG.PLAYER_MOVEMENT_HORIZONTAL_VELOCITY
+      );
 
 
-    update(ts,dt){
-        if(!this.active){
-            return
-        }
-        if(this.#healthComponent.isDead){
-            this.#hide();
-            this.setVisible(true)
-            this.#shipSprite.play({
-                key: 'explosion'
-            });
-            this.#eventBusComponent.emit(CUSTOM_EVENTS.PLAYER_DESTROYED)
-            return;
-        }
 
-        this.#shipSprite.setFrame((CONFIG.PLAYER_HEALTH - this.#healthComponent.life).toString(10))
+    this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
+    this.once(Phaser.GameObjects.Events.DESTROY, ()=>{
+        this.scene.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);
+    }, this)
+  }
 
-        this.#keyboardInputComponent.update();
-        this.#horizontalMovementComponent.update()
-        this.#weaponComponent.update(dt)
-        // this.#verticalMovementComponent.update()
-    }
 
-    #hide(){
-        this.setActive(false)
-        this.setVisible(false)
-        this.#shipEngineSprite.setVisible(false)
-        this.#shipEngineThrusterSprite.setVisible(false)
-        this.#keyboardInputComponent.lockInput = true
 
-    }
+  update(ts,dt){
+    this.#keyboardInputComponent.update();
+    this.#horizontalMovementComponent.update()
+  }
 
-    #spawn(){
-        this.setActive(true)
-        this.setVisible(true)
-        this.#shipEngineSprite.setVisible(true)
-        this.#shipEngineThrusterSprite.setVisible(true)
-        this.#shipSprite.setTexture('ship', 0);
-        this.#healthComponent.reset();
-        this.setPosition(this.scene.scale.width / 2, this.scene.scale.height - 32)
-        this.#keyboardInputComponent.lockInput = false
-    }
 }
