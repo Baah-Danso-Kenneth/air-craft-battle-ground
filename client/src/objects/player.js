@@ -2,6 +2,7 @@ import { KeyboardInputComponent } from "../components/inputs/keyboard-component"
 import * as CONFIG from '../../../shared/config.js'
 import { VerticalMovementComponent } from "../components/movements/vertical-component.js";
 import { HorizontalMovementComponent } from "../components/movements/horizontal-movement.js";
+import { WeaponComponent } from "../components/weapon/weapon-component.js";
 
 
 export class Player extends Phaser.GameObjects.Container {
@@ -10,6 +11,7 @@ export class Player extends Phaser.GameObjects.Container {
   #keyboardInputComponent
   #horizontalMovementComponent
   #verticalMovementComponent
+  #weaponComponent;
 
   constructor(scene) {
     super(scene, scene.scale.width / 2, scene.scale.height - 95, []);
@@ -37,6 +39,14 @@ export class Player extends Phaser.GameObjects.Container {
       );
 
 
+      this.#weaponComponent = new WeaponComponent(this, this.#keyboardInputComponent,{
+        maxCount: CONFIG.PLAYER_BULLET_MAX_COUNT,
+        yOffset: -70,
+        speed:CONFIG.PLAYER_BULLET_SPEED,
+        flipY: false,
+        lifeSpan:CONFIG.PLAYER_BULLET_LIFESPAN,
+        interval: CONFIG.PLAYER_BULLET_INTERVAL,
+      })
 
     this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
     this.once(Phaser.GameObjects.Events.DESTROY, ()=>{
@@ -49,6 +59,7 @@ export class Player extends Phaser.GameObjects.Container {
   update(ts,dt){
     this.#keyboardInputComponent.update();
     this.#horizontalMovementComponent.update()
+    this.#weaponComponent.update(dt)
   }
 
 }
