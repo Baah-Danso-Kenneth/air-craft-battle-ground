@@ -1,7 +1,8 @@
 import Phaser from "phaser";
-import { GameScene } from "./src/scenes/game-scene";
-import { PreloadScene } from "./src/scenes/preload-scene";
 import { BootScene } from "./src/scenes/boot-scene";
+import { PreloadScene } from "./src/scenes/preload-scene";
+import { GameScene } from "./src/scenes/game-scene";
+
 
 
 
