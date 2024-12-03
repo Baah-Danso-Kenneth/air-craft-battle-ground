@@ -90,6 +90,12 @@
         "key": "flames_fire",
         "url": "flames_fire.png",
         "frameConfig": {"frameWidth":64, "frameHeight":64}
+      },
+      {
+        "type": "spritesheet",
+        "key": "explosion_sheet",
+        "url": "explosion_sheet.png",
+        "frameConfig": {"frameWidth":64, "frameHeight":64}
       }
     ]
   },

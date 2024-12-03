@@ -47,5 +47,12 @@
     "frameRate": 12,
     "repeat": 0,
     "assetKey": "fighter_destroy"
+  },
+  {
+    "key": "explode",
+    "frames": [4,5],
+    "frameRate": 12,
+    "repeat": 0,
+    "assetKey": "explosion_sheet"
   }
 ]
