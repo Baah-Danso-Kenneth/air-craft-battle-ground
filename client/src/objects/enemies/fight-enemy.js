@@ -4,6 +4,8 @@ import { BotScoutInputComponent } from "../../components/inputs/bot-scout-input-
 import { VerticalMovementComponent } from "../../components/movements/vertical-component.js";
 import { BotFighterInputComponent } from "../../components/inputs/bot-fighter-scout-input-component.js";
 import { WeaponComponent } from "../../components/weapon/weapon-component.js";
+import { HealthComponent } from "../../components/health/health-component.js";
+import { ColliderComponent } from "../../components/collider/collider-component.js";
 
 
 
@@ -13,6 +15,8 @@ export class FightEnemy extends Phaser.GameObjects.Container{
   #inputComponent
   #verticalMovementComponent
   #weaponComponent
+  #healthComponent
+  #colliderComponent
 
 
   constructor(scene,x,y) {
@@ -42,6 +46,9 @@ export class FightEnemy extends Phaser.GameObjects.Container{
       this,
        this.#inputComponent, CONFIG.ENEMY_FIGHTER_MOVEMENT_VERTICAL_VELOCITY)
 
+       this.#healthComponent = new HealthComponent(CONFIG.ENEMY_FIGHTER_HEALTH)
+       this.#colliderComponent = new ColliderComponent(this.#healthComponent)
+
 
     this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
     this.once(Phaser.GameObjects.Events.DESTROY, ()=>{
@@ -49,9 +56,39 @@ export class FightEnemy extends Phaser.GameObjects.Container{
     }, this)
   }
 
+  get colliderComponent() {
+    return this.#colliderComponent;
+  }
+
+  get healthComponent() {
+    return this.#healthComponent;
+  }
+
+  get weaponGameObjectGroup() {
+    return this.#weaponComponent.bulletGroup;
+  }
+
+  get weaponComponent() {
+    return this.#weaponComponent;
+  }
+
+  get shipAssetKey() {
+    return 'fighter';
+  }
+
+  get shipDestroyedAnimationKey() {
+    return 'fighter_destroy';
+  }
 
 
   update(ts,dt){
+    if(!this.active){
+        return;
+    }
+    if(this.#healthComponent.isDead){
+        this.setActive(false)
+        this.setVisible(false)
+    }
     this.#inputComponent.update();
     this.#verticalMovementComponent.update()
     this.#weaponComponent.update(dt)

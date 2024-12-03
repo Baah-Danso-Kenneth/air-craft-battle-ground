@@ -56,6 +56,7 @@ export class WeaponComponent{
           bullet.enableBody(true, x, y, true, true);
           bullet.body.velocity.y -= this.#bulletConfig.speed
           bullet.setState(this.#bulletConfig.lifeSpan)
+          bullet.setFlipY(this.#bulletConfig.flipY)
           bullet.play('bullet')
 
           this.#fireBulletInterval = this.#bulletConfig.interval

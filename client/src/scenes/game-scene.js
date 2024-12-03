@@ -13,9 +13,28 @@ export class GameScene extends Phaser.Scene{
     create(){
      this.#background = this.add.tileSprite(0,0, 1024, 576, 'green_bg').setOrigin(0,0)
     
-     new Player(this)
-     new ScoutEnemy(this, this.scale.width / 2, 60)
-     new FightEnemy(this, this.scale.width / 2, 60)
+     const player = new Player(this)
+    //  const fighter_enemy = new ScoutEnemy(this, this.scale.width / 2, 60)
+     const fighter_enemy = new FightEnemy(this, this.scale.width / 2, 60)
+
+     this.physics.add.overlap(player, fighter_enemy,(playerGameObject, enemyGameObject)=>{
+        playerGameObject.colliderComponent.collideWithEnemyShip();
+        enemyGameObject.colliderComponent.collideWithEnemyShip();
+
+     })
+
+     this.physics.add.overlap(player, fighter_enemy.weaponGameObjectGroup,(playerGameObject, projectGameTileObject)=>{
+       fighter_enemy.weaponComponent.destroyBullet(projectGameTileObject)
+        playerGameObject.colliderComponent.collideWithEnemyProjectile();
+
+     })
+
+     this.physics.add.overlap(fighter_enemy, player.weaponGameObjectGroup,(enemyGameObject, projectGameTileObject)=>{
+        player.weaponComponent.destroyBullet(projectGameTileObject)
+
+        fighter_enemy.colliderComponent.collideWithEnemyProjectile();
+     })
+
     }
 
 
