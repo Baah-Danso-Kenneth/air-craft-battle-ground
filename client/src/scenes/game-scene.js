@@ -4,6 +4,7 @@ import { ScoutEnemy } from "../objects/enemies/scout-enemy";
 import { Player } from "../objects/player";
 import * as CONFIG from '../../../shared/config'
 import { EventBusComponent } from "../components/events/event-bus-component";
+import { EnemyDestroyedComponent } from "../components/spawner/enemy-destroyed-component";
 
 export class GameScene extends Phaser.Scene{
     #background
@@ -36,14 +37,23 @@ export class GameScene extends Phaser.Scene{
         },
         eventComponent
      )
+     new EnemyDestroyedComponent(this, eventComponent)
 
      this.physics.add.overlap(player, scoutSpawer.phaserGroup,(playerGameObject, enemyGameObject)=>{
+      if(!playerGameObject.active || !enemyGameObject.active){
+         return
+     }
+
         playerGameObject.colliderComponent.collideWithEnemyShip();
         enemyGameObject.colliderComponent.collideWithEnemyShip();
 
      })
 
      this.physics.add.overlap(player, fightherSpawer.phaserGroup,(playerGameObject, enemyGameObject)=>{
+      if(!playerGameObject.active || !enemyGameObject.active){
+         return
+     }
+
         playerGameObject.colliderComponent.collideWithEnemyShip();
         enemyGameObject.colliderComponent.collideWithEnemyShip();
 
@@ -56,6 +66,10 @@ export class GameScene extends Phaser.Scene{
      }
 
       this.physics.add.overlap(player, gameObject.weaponGameObjectGroup,(playerGameObject, projectGameTileObject)=>{
+         if(!playerGameObject.active || !projectGameTileObject.active){
+            return
+        }
+
          gameObject.weaponComponent.destroyBullet(projectGameTileObject)
           playerGameObject.colliderComponent.collideWithEnemyProjectile();
   
@@ -66,14 +80,18 @@ export class GameScene extends Phaser.Scene{
 
 
      this.physics.add.overlap(scoutSpawer.phaserGroup, player.weaponGameObjectGroup,(enemyGameObject, projectGameTileObject)=>{
+      if(!enemyGameObject.active || !projectGameTileObject.active){
+         return
+     }
         player.weaponComponent.destroyBullet(projectGameTileObject)
-
         enemyGameObject.colliderComponent.collideWithEnemyProjectile();
      })
 
      this.physics.add.overlap(fightherSpawer.phaserGroup, player.weaponGameObjectGroup,(enemyGameObject, projectGameTileObject)=>{
+      if(!enemyGameObject.active || !projectGameTileObject.active){
+         return
+     }
         player.weaponComponent.destroyBullet(projectGameTileObject)
-
         enemyGameObject.colliderComponent.collideWithEnemyProjectile();
      })
 

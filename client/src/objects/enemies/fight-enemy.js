@@ -100,13 +100,14 @@ export class FightEnemy extends Phaser.GameObjects.Container{
     if(!this.#isInitialized){
       return
     }
-    
+
     if(!this.active){
         return;
     }
     if(this.#healthComponent.isDead){
         this.setActive(false)
         this.setVisible(false)
+        this.#eventBusComponent.emit(CONFIG.CUSTOM_EVENTS.ENEMY_DESTROYED, this)
     }
     this.#inputComponent.update();
     this.#verticalMovementComponent.update()
