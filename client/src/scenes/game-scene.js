@@ -5,6 +5,7 @@ import { Player } from "../objects/player";
 import * as CONFIG from '../../../shared/config'
 import { EventBusComponent } from "../components/events/event-bus-component";
 import { EnemyDestroyedComponent } from "../components/spawner/enemy-destroyed-component";
+import { Score } from "../objects/ui/score";
 
 export class GameScene extends Phaser.Scene{
     #background
@@ -94,6 +95,8 @@ export class GameScene extends Phaser.Scene{
         player.weaponComponent.destroyBullet(projectGameTileObject)
         enemyGameObject.colliderComponent.collideWithEnemyProjectile();
      })
+
+     new Score(this, eventComponent)
 
     }
 

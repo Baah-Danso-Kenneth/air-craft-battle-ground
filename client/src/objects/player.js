@@ -28,8 +28,8 @@ export class Player extends Phaser.GameObjects.Container {
 
 
 
-    this.#playerShip = scene.add.sprite(0,0, 'player_ship').setScale(0.5)
-    this.#shipEngine = scene.add.sprite(0,65, 'flames_fire').setScale(0.8)
+    this.#playerShip = scene.add.sprite(0,0, 'player_ship').setScale(0.4)
+    this.#shipEngine = scene.add.sprite(0,50, 'flames_fire').setScale(0.8)
     this.#shipEngine.play('flameEffect')
 
     this.add([this.#shipEngine,this.#playerShip])

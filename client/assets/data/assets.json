@@ -74,6 +74,12 @@
       },
       {
         "type": "spritesheet",
+        "key": "player_shippp",
+        "url": "ship_sprite_fly.png",
+        "frameConfig": { "frameWidth": 100, "frameHeight": 100 }
+      },
+      {
+        "type": "spritesheet",
         "key": "ship_engine_thruster",
         "url": "ship_engine_thruster.png",
         "frameConfig": { "frameWidth": 48, "frameHeight": 48 }
