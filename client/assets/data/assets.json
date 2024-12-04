@@ -56,6 +56,12 @@
       },
       {
         "type": "spritesheet",
+        "key": "fire_fire",
+        "url": "fire_fire.png",
+        "frameConfig": { "frameWidth": 64, "frameHeight": 64 }
+      },
+      {
+        "type": "spritesheet",
         "key": "scout_engine",
         "url": "scout_engine.png",
         "frameConfig": { "frameWidth": 64, "frameHeight": 64 }

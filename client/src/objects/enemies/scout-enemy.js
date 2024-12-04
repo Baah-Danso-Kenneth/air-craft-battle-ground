@@ -16,10 +16,13 @@ export class ScoutEnemy extends Phaser.GameObjects.Container{
   #horizontalMovementComponent
   #healthComponent
   #colliderComponent
+  #eventBusComponent
+  #isInitialized
 
 
   constructor(scene,x,y) {
     super(scene, x,y, []);
+    this.#isInitialized=false
     this.scene.add.existing(this)
     this.scene.physics.add.existing(this)
     this.body.setSize(24,24)
@@ -30,19 +33,6 @@ export class ScoutEnemy extends Phaser.GameObjects.Container{
     this.#shipEngine = scene.add.sprite(0,-55, 'scout_engine').setScale(2)
     this.#shipEngine.play('scout_engine')
     this.add([this.#shipEngine,this.#enemyShip])
-
-    this.#inputComponent = new BotScoutInputComponent(this);
-
-    this.#verticalMovementComponent = new VerticalMovementComponent(
-      this,
-       this.#inputComponent, CONFIG.ENEMY_SCOUT_MOVEMENT_VERTICAL_VELOCITY)
-
-       this.#horizontalMovementComponent = new HorizontalMovementComponent(
-        this,
-         this.#inputComponent, CONFIG.ENEMY_SCOUT_MOVEMENT_HORIZONTAL_VELOCITY)
-
-      this.#healthComponent = new HealthComponent(CONFIG.ENEMY_SCOUT_HEALTH)
-      this.#colliderComponent = new ColliderComponent(this.#healthComponent)
 
     this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
     this.once(Phaser.GameObjects.Events.DESTROY, ()=>{
@@ -58,7 +48,39 @@ export class ScoutEnemy extends Phaser.GameObjects.Container{
     return this.#healthComponent;
   }
 
+  init(eventBusComponent){
+    this.#eventBusComponent = eventBusComponent
+    this.#inputComponent = new BotScoutInputComponent(this);
+
+    this.#verticalMovementComponent = new VerticalMovementComponent(
+      this,
+       this.#inputComponent, CONFIG.ENEMY_SCOUT_MOVEMENT_VERTICAL_VELOCITY)
+
+       this.#horizontalMovementComponent = new HorizontalMovementComponent(
+        this,
+         this.#inputComponent, CONFIG.ENEMY_SCOUT_MOVEMENT_HORIZONTAL_VELOCITY)
+
+      this.#healthComponent = new HealthComponent(CONFIG.ENEMY_SCOUT_HEALTH)
+      this.#colliderComponent = new ColliderComponent(this.#healthComponent)
+      this.#eventBusComponent.emit(CONFIG.CUSTOM_EVENTS.ENEMY_INIT, this)
+      this.#isInitialized=true
+
+  }
+
+  reset(){
+    this.setActive(true)
+    this.setVisible(true)
+    this.#healthComponent.reset()
+    this.#inputComponent.startX = this.x;
+    this.#verticalMovementComponent.reset()
+    this.#horizontalMovementComponent.reset()
+  }
+
   update(ts,dt){
+    if(!this.#isInitialized){
+      return
+    }
+
     if(!this.active){
       return;
   }
