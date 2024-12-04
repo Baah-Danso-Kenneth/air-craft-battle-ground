@@ -1,6 +1,9 @@
+import { EnemySpawnerComponent } from "../components/spawner/enemy-spawner-component";
 import { FightEnemy } from "../objects/enemies/fight-enemy";
 import { ScoutEnemy } from "../objects/enemies/scout-enemy";
 import { Player } from "../objects/player";
+import * as CONFIG from '../../../shared/config'
+import { EventBusComponent } from "../components/events/event-bus-component";
 
 export class GameScene extends Phaser.Scene{
     #background
@@ -12,27 +15,66 @@ export class GameScene extends Phaser.Scene{
 
     create(){
      this.#background = this.add.tileSprite(0,0, 1024, 576, 'green_bg').setOrigin(0,0)
-    
-     const player = new Player(this)
-    //  const fighter_enemy = new ScoutEnemy(this, this.scale.width / 2, 60)
-     const fighter_enemy = new FightEnemy(this, this.scale.width / 2, 60)
+    const eventComponent = new  EventBusComponent()
 
-     this.physics.add.overlap(player, fighter_enemy,(playerGameObject, enemyGameObject)=>{
+     const player = new Player(this)
+     const scoutSpawer = new EnemySpawnerComponent(
+        this,
+        ScoutEnemy,
+        {
+            interval: CONFIG.ENEMY_SCOUT_GROUP_SPAWN_INTERVAL,
+            spawnAt: CONFIG.ENEMY_SCOUT_GROUP_SPAWN_START,
+        },
+        eventComponent
+     )
+     const fightherSpawer = new EnemySpawnerComponent(
+        this,
+        FightEnemy,
+        {
+            interval: CONFIG.ENEMY_FIGHTER_GROUP_SPAWN_INTERVAL,
+            spawnAt: CONFIG.ENEMY_FIGHTER_GROUP_SPAWN_START,
+        },
+        eventComponent
+     )
+
+     this.physics.add.overlap(player, scoutSpawer.phaserGroup,(playerGameObject, enemyGameObject)=>{
         playerGameObject.colliderComponent.collideWithEnemyShip();
         enemyGameObject.colliderComponent.collideWithEnemyShip();
 
      })
 
-     this.physics.add.overlap(player, fighter_enemy.weaponGameObjectGroup,(playerGameObject, projectGameTileObject)=>{
-       fighter_enemy.weaponComponent.destroyBullet(projectGameTileObject)
-        playerGameObject.colliderComponent.collideWithEnemyProjectile();
+     this.physics.add.overlap(player, fightherSpawer.phaserGroup,(playerGameObject, enemyGameObject)=>{
+        playerGameObject.colliderComponent.collideWithEnemyShip();
+        enemyGameObject.colliderComponent.collideWithEnemyShip();
 
      })
 
-     this.physics.add.overlap(fighter_enemy, player.weaponGameObjectGroup,(enemyGameObject, projectGameTileObject)=>{
+
+     eventComponent.on(CONFIG.CUSTOM_EVENTS.ENEMY_INIT, (gameObject)=>{
+      if(gameObject.constructor.name !== 'FightEnemy'){
+         return;
+     }
+
+      this.physics.add.overlap(player, gameObject.weaponGameObjectGroup,(playerGameObject, projectGameTileObject)=>{
+         gameObject.weaponComponent.destroyBullet(projectGameTileObject)
+          playerGameObject.colliderComponent.collideWithEnemyProjectile();
+  
+       })
+     })
+     
+
+
+
+     this.physics.add.overlap(scoutSpawer.phaserGroup, player.weaponGameObjectGroup,(enemyGameObject, projectGameTileObject)=>{
         player.weaponComponent.destroyBullet(projectGameTileObject)
 
-        fighter_enemy.colliderComponent.collideWithEnemyProjectile();
+        enemyGameObject.colliderComponent.collideWithEnemyProjectile();
+     })
+
+     this.physics.add.overlap(fightherSpawer.phaserGroup, player.weaponGameObjectGroup,(enemyGameObject, projectGameTileObject)=>{
+        player.weaponComponent.destroyBullet(projectGameTileObject)
+
+        enemyGameObject.colliderComponent.collideWithEnemyProjectile();
      })
 
     }
