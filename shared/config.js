@@ -1,5 +1,7 @@
+import { ScoutEnemy } from "../client/src/objects/enemies/scout-enemy";
+
 export const PLAYER_LIVES = 3;
-export const PLAYER_HEALTH = 4;
+export const PLAYER_HEALTH = 3;
 export const PLAYER_BULLET_SPEED = 300;
 export const PLAYER_BULLET_INTERVAL = 300;
 export const PLAYER_BULLET_LIFESPAN = 3;
@@ -38,3 +40,4 @@ export const CUSTOM_EVENTS = Object.freeze({
     SHIP_HIT:'SHIP_HIT',
     SHIP_SHOOT:'SHIP_SHOOT'
 })
+
