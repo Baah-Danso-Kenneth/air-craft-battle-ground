@@ -24,6 +24,13 @@
     "assetKey": "scout_engine"
   },
   {
+    "key": "fire_fire",
+    "frameRate": 5,
+    "repeat": -1,
+    "assetKey": "fire_fire"
+  },
+
+  {
     "key": "scout_destroy",
     "frameRate": 12,
     "repeat": 0,
