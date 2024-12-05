@@ -13,12 +13,14 @@ export class Player extends Phaser.GameObjects.Container {
   #keyboardInputComponent
   #horizontalMovementComponent
   #verticalMovementComponent
+  #eventBusComponent;
   #weaponComponent;
   #healthComponent
   #colliderComponent
 
-  constructor(scene) {
+  constructor(scene, eventBusComponent) {
     super(scene, scene.scale.width / 2, scene.scale.height - 95, []);
+    this.#eventBusComponent = eventBusComponent
     this.scene.add.existing(this)
     this.scene.physics.add.existing(this)
     this.body.setSize(24,24)
@@ -89,6 +91,7 @@ export class Player extends Phaser.GameObjects.Container {
       this.#playerShip.play({
         key:'explosion'
       });
+      this.#eventBusComponent.emit(CONFIG.CUSTOM_EVENTS.PLAYER_DESTROYED)
       return;
   }
 
