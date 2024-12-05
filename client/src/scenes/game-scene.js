@@ -6,6 +6,7 @@ import * as CONFIG from '../../../shared/config'
 import { EventBusComponent } from "../components/events/event-bus-component";
 import { EnemyDestroyedComponent } from "../components/spawner/enemy-destroyed-component";
 import { Score } from "../objects/ui/score";
+import { Lives } from "../objects/ui/lives";
 
 export class GameScene extends Phaser.Scene{
     #background
@@ -19,7 +20,7 @@ export class GameScene extends Phaser.Scene{
      this.#background = this.add.tileSprite(0,0, 1024, 576, 'green_bg').setOrigin(0,0)
     const eventComponent = new  EventBusComponent()
 
-     const player = new Player(this)
+     const player = new Player(this, eventComponent)
      const scoutSpawer = new EnemySpawnerComponent(
         this,
         ScoutEnemy,
@@ -41,8 +42,8 @@ export class GameScene extends Phaser.Scene{
      new EnemyDestroyedComponent(this, eventComponent)
 
      this.physics.add.overlap(player, scoutSpawer.phaserGroup,(playerGameObject, enemyGameObject)=>{
-      if(!playerGameObject.active || !enemyGameObject.active){
-         return
+        if(!playerGameObject.active || !enemyGameObject.active){
+           return
      }
 
         playerGameObject.colliderComponent.collideWithEnemyShip();
@@ -51,39 +52,39 @@ export class GameScene extends Phaser.Scene{
      })
 
      this.physics.add.overlap(player, fightherSpawer.phaserGroup,(playerGameObject, enemyGameObject)=>{
-      if(!playerGameObject.active || !enemyGameObject.active){
-         return
-     }
-
-        playerGameObject.colliderComponent.collideWithEnemyShip();
-        enemyGameObject.colliderComponent.collideWithEnemyShip();
-
-     })
-
-
-     eventComponent.on(CONFIG.CUSTOM_EVENTS.ENEMY_INIT, (gameObject)=>{
-      if(gameObject.constructor.name !== 'FightEnemy'){
-         return;
-     }
-
-      this.physics.add.overlap(player, gameObject.weaponGameObjectGroup,(playerGameObject, projectGameTileObject)=>{
-         if(!playerGameObject.active || !projectGameTileObject.active){
+        if(!playerGameObject.active || !enemyGameObject.active){
+           return
+         }
+         
+         playerGameObject.colliderComponent.collideWithEnemyShip();
+         enemyGameObject.colliderComponent.collideWithEnemyShip();
+         
+      })
+      
+      
+      eventComponent.on(CONFIG.CUSTOM_EVENTS.ENEMY_INIT, (gameObject)=>{
+         if(gameObject.constructor.name !== 'FightEnemy'){
+            return;
+         }
+         
+         this.physics.add.overlap(player, gameObject.weaponGameObjectGroup,(playerGameObject, projectGameTileObject)=>{
+            if(!playerGameObject.active || !projectGameTileObject.active){
             return
         }
 
          gameObject.weaponComponent.destroyBullet(projectGameTileObject)
-          playerGameObject.colliderComponent.collideWithEnemyProjectile();
-  
-       })
-     })
-     
-
-
-
+         playerGameObject.colliderComponent.collideWithEnemyProjectile();
+         
+      })
+   })
+   
+   
+   
+   
      this.physics.add.overlap(scoutSpawer.phaserGroup, player.weaponGameObjectGroup,(enemyGameObject, projectGameTileObject)=>{
       if(!enemyGameObject.active || !projectGameTileObject.active){
          return
-     }
+      }
         player.weaponComponent.destroyBullet(projectGameTileObject)
         enemyGameObject.colliderComponent.collideWithEnemyProjectile();
      })
@@ -97,9 +98,10 @@ export class GameScene extends Phaser.Scene{
      })
 
      new Score(this, eventComponent)
+     new Lives(this,eventComponent)
 
     }
-
+    
 
     update(){
         this.#background.tilePositionY -=1;

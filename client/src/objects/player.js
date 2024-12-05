@@ -13,12 +13,14 @@ export class Player extends Phaser.GameObjects.Container {
   #keyboardInputComponent
   #horizontalMovementComponent
   #verticalMovementComponent
+  #eventBusComponent;
   #weaponComponent;
   #healthComponent
   #colliderComponent
 
-  constructor(scene) {
+  constructor(scene, eventBusComponent) {
     super(scene, scene.scale.width / 2, scene.scale.height - 95, []);
+    this.#eventBusComponent = eventBusComponent
     this.scene.add.existing(this)
     this.scene.physics.add.existing(this)
     this.body.setSize(24,24)
@@ -54,6 +56,9 @@ export class Player extends Phaser.GameObjects.Container {
 
       this.#healthComponent = new HealthComponent(CONFIG.PLAYER_HEALTH)
       this.#colliderComponent = new ColliderComponent(this.#healthComponent)
+      this.#hide()
+
+      this.#eventBusComponent.on(CONFIG.CUSTOM_EVENTS.PLAYER_SPAWN, this.#spawn, this)
 
     this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
     this.once(Phaser.GameObjects.Events.DESTROY, ()=>{
@@ -89,6 +94,7 @@ export class Player extends Phaser.GameObjects.Container {
       this.#playerShip.play({
         key:'explosion'
       });
+      this.#eventBusComponent.emit(CONFIG.CUSTOM_EVENTS.PLAYER_DESTROYED)
       return;
   }
 
@@ -104,5 +110,15 @@ export class Player extends Phaser.GameObjects.Container {
     this.#shipEngine.setVisible(false)
     this.#keyboardInputComponent.lockInput = true
   }
+
+  #spawn(){
+    this.setActive(true)
+    this.setVisible(true)
+    this.#shipEngine.setVisible(true)
+    this.#playerShip.setTexture('player_ship', 0);
+    this.#healthComponent.reset();
+    this.setPosition(this.scene.scale.width / 2, this.scene.scale.height - 92)
+    this.#keyboardInputComponent.lockInput = false
+}
 
 }
