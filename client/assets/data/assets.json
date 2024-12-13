@@ -19,6 +19,47 @@
       },
       {
         "type": "image",
+        "key": "global",
+        "url": "global.png"
+      },
+      {
+        "type": "image",
+        "key": "glassPanel",
+        "url": "glassPanel_green.png"
+      },
+      {
+        "type": "image",
+        "key": "player_ship1",
+        "url": "player_ship1.png"
+      },
+      {
+        "type": "image",
+        "key": "player_ship2",
+        "url": "player_ship2.png"
+      },
+      {
+        "type": "image",
+        "key": "player_ship3",
+        "url": "player_ship3.png"
+      },
+      {
+        "type": "image",
+        "key": "player_ship4",
+        "url": "player_ship4.png"
+      },
+      {
+        "type": "image",
+        "key": "player_ship5",
+        "url": "player_ship5.png"
+      },
+      {
+        "type": "image",
+        "key": "player_ship6",
+        "url": "player_ship6.png"
+      },
+
+      {
+        "type": "image",
         "key": "flame",
         "url": "flame.png"
       },
@@ -26,6 +67,16 @@
         "type": "image",
         "key": "green_bg",
         "url": "green_bg.png"
+      },
+      {
+        "type": "image",
+        "key": "cursor_white",
+        "url": "cursor_white.png"
+      },
+      {
+        "type": "image",
+        "key": "star_bg_s3",
+        "url": "star-bg-s3.png"
       },
       {
         "type": "image",
