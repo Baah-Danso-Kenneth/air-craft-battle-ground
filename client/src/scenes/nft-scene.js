@@ -1,9 +1,14 @@
+import { OPTION_TEXT_STYLE } from "../objects/content/text-font-style";
+
 export class NftScene extends Phaser.Scene {
+    #background;
     constructor() {
         super({ key: 'NftScene' });
     }
 
     create() {
+        this.#background = this.add.tileSprite(0,0, 1024, 576, 'purple_bg').setOrigin(0,0)
+        this.add.text(350, 30, 'nft ship collection', OPTION_TEXT_STYLE)
         const rows = 3; 
         const cols = 3; 
         const cellWidth = 100;

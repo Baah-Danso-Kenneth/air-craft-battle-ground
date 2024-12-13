@@ -1,5 +1,9 @@
+import { MAIN_MENU_OPTIONS } from "../../../shared/config";
+import { KeyboardInputComponent } from "../components/inputs/keyboard-component";
 import { OPTION_TEXT_STYLE, WELCOME_TEXT_STYLE } from "../objects/content/text-font-style";
 import { NineSlice } from "../objects/ui/nine-slice";
+import { Controls } from "../utils/controls";
+import { DIRECTION } from "../utils/direction";
 
 const PLAYER_INPUT_CURSOR_POSITION = Object.freeze({
     x:40,
@@ -7,17 +11,13 @@ const PLAYER_INPUT_CURSOR_POSITION = Object.freeze({
 });
 
 
-const MAIN_MENU_OPTIONS = Object.freeze({
-    NEW_GAME:'NEW_GAME',
-    CONTINUE:'CONTINUE',
-    OPTIONS: 'OPTIONS'
-})
 
 export class WelcomeScene extends Phaser.Scene {
     #background
     #welcomeMenu
     #cursorKeys
     #controls
+    #keyboardInput
     #mainMenuCursorPhaserImageGameObject
     #selectedMenuOptions
     #isContinueButtonEnabled
@@ -32,7 +32,9 @@ export class WelcomeScene extends Phaser.Scene {
             cornerCutSize:32,
             textureManager: this.sys.textures,
             assetKey: 'glassPanel'
-        })
+        });
+
+        this.#selectedMenuOptions = MAIN_MENU_OPTIONS.LOGIN
     }
     create() {
        
@@ -42,15 +44,15 @@ export class WelcomeScene extends Phaser.Scene {
         this.#background = this.add.tileSprite(0,0, 1024, 576, 'star_bg_s3').setOrigin(0,0)
         // this.add.image(0,0,'star_bg_s3').setAlpha(1);
         const renderedText = "Spacecraft war".toUpperCase();
-        const bannerText = this.add.text(0, 10, renderedText, WELCOME_TEXT_STYLE);
+        const bannerText = this.add.text(0, 50, renderedText, WELCOME_TEXT_STYLE);
         bannerText.setOrigin(0.5, 0);
         bannerText.setX(this.game.config.width / 2);
     
 
 
-        const globeImage = this.add.image(this.game.config.width / 2, 180,'global');
+        const globeImage = this.add.image(this.game.config.width / 2, 250,'global');
         globeImage.setOrigin(0.5, 0.5);
-        globeImage.setScale(1);
+        globeImage.setScale(2);
 
         this.tweens.add({
         targets: globeImage,
@@ -64,17 +66,13 @@ export class WelcomeScene extends Phaser.Scene {
         const menuBgWidth = 300;
     
         
-        const menuBgContainer = this.#nineSliceMenu.createNineSliceContainer(this, menuBgWidth, 200);
+        const menuBgContainer = this.#nineSliceMenu.createNineSliceContainer(this, menuBgWidth, 100);
     
-        const newGameText = this.add.text(menuBgWidth / 2, 40, 'New Game', OPTION_TEXT_STYLE).setOrigin(0.5);
-        const continueGameText = this.add.text(menuBgWidth / 2, 90, 'Continue', OPTION_TEXT_STYLE).setOrigin(0.5);
-        if (!this.#isContinueButtonEnabled) {
-            continueGameText.setAlpha(0.5);
-        }
-        const optionGameText = this.add.text(menuBgWidth / 2, 140, 'Options', OPTION_TEXT_STYLE).setOrigin(0.5);
+        const newGameText = this.add.text(menuBgWidth / 2, 40, 'Log In', OPTION_TEXT_STYLE).setOrigin(0.5);
+
     
-        const menuContainer = this.add.container(0, 0, [menuBgContainer, newGameText, continueGameText, optionGameText]);
-        menuContainer.setPosition(this.scale.width / 2 - menuBgWidth / 2, 300);
+        const menuContainer = this.add.container(0, 0, [menuBgContainer, newGameText]);
+        menuContainer.setPosition(this.scale.width / 2 - menuBgWidth / 2, 410);
     
         this.#mainMenuCursorPhaserImageGameObject = this.add.image(PLAYER_INPUT_CURSOR_POSITION.x, PLAYER_INPUT_CURSOR_POSITION.y, 'cursor_white')
             .setOrigin(0.5)
@@ -92,102 +90,98 @@ export class WelcomeScene extends Phaser.Scene {
             },
             targets: this.#mainMenuCursorPhaserImageGameObject,
         });
+        this.#controls = new Controls(this)
     
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-            if (this.#selectedMenuOptions === MAIN_MENU_OPTIONS.NEW_GAME) {
-                this.scene.start(SCENE_KEYS.FIRST_STAGE_SCENE);
-                return;
-            }
-    
-            if (this.#selectedMenuOptions === MAIN_MENU_OPTIONS.OPTIONS) {
-                this.scene.start(SCENE_KEYS.OPTION_SCENE);
+            if (this.#selectedMenuOptions === MAIN_MENU_OPTIONS.LOGIN) {
+                this.scene.start('NftScene');
                 return;
             }
         });
-    
-        // this.#controls = new Controls(this);
     }
     
 
 
-    // update(){
-    //     if(this.#controls.isInputLocked){
-    //         return;
-    //     }
+    update(){
+        if(this.#controls.isInputLocked){
+            return;
+        }
 
-    //     const wasSpaceKeyPressed = this.#controls.wasSpaceKeyPressed();
+        const wasSpaceKeyPressed = this.#controls.wasSpaceKeyPressed();
 
-    //     if(wasSpaceKeyPressed){
-    //         this.cameras.main.fadeOut(500, 0,0,0);
-    //         this.#controls.lockInput=true;
-    //         return;
-    //     }
+        if(wasSpaceKeyPressed){
+            this.cameras.main.fadeOut(500, 0,0,0);
+            this.#controls.lockInput=true;
+            return;
+        }
 
-    //     const selectedDirection = this.#controls.getDirectionKeyJustPressed();
-    //     if(selectedDirection !== DIRECTION.NONE){
-    //         this.#moveMenuSelectCursor(selectedDirection)
-    //     }
-    // }
+        const selectedDirection = this.#controls.getDirectionKeyJustPressed();
+        if(selectedDirection !== DIRECTION.NONE){
+            this.#moveMenuSelectCursor(selectedDirection)
+        }
+    }
 
 
-    // #moveMenuSelectCursor(direction){
-    //     this.#updateSelectedMenuOptionInput(direction)
-    //     switch(this.#selectedMenuOptions){
-    //         case MAIN_MENU_OPTIONS.NEW_GAME:
-    //             this.#mainMenuCursorPhaserImageGameObject.setY(PLAYER_INPUT_CURSOR_POSITION.y)
-    //             break;
-    //         case MAIN_MENU_OPTIONS.CONTINUE:
-    //             this.#mainMenuCursorPhaserImageGameObject.setY(91)
-    //             break;
-    //         case MAIN_MENU_OPTIONS.OPTIONS:
-    //             this.#mainMenuCursorPhaserImageGameObject.setY(141)
-    //             break;
-    //             default:
-    //                 this.#selectedMenuOptions = MAIN_MENU_OPTIONS.NEW_GAME
-    //                 break;
-    //     }
-    // }
+    #moveMenuSelectCursor(direction){
+        this.#updateSelectedMenuOptionInput(direction)
+        switch(this.#selectedMenuOptions){
+            case MAIN_MENU_OPTIONS.NEW_GAME:
+                this.#mainMenuCursorPhaserImageGameObject.setY(PLAYER_INPUT_CURSOR_POSITION.y)
+                break;
+            case MAIN_MENU_OPTIONS.CONTINUE:
+                this.#mainMenuCursorPhaserImageGameObject.setY(91)
+                break;
+            case MAIN_MENU_OPTIONS.OPTIONS:
+                this.#mainMenuCursorPhaserImageGameObject.setY(141)
+                break;
+                default:
+                    this.#selectedMenuOptions = MAIN_MENU_OPTIONS.NEW_GAME
+                    break;
+        }
+    }
 
-    // #updateSelectedMenuOptionInput(direction) {
-    //     switch(direction) {
-    //         case DIRECTION.UP:
-    //             if (this.#selectedMenuOptions === MAIN_MENU_OPTIONS.NEW_GAME) {
-    //                 return;
-    //             }
-    //             if (this.#selectedMenuOptions === MAIN_MENU_OPTIONS.CONTINUE) {
-    //                 this.#selectedMenuOptions = MAIN_MENU_OPTIONS.NEW_GAME;
-    //                 return;
-    //             }
-    //             if (this.#selectedMenuOptions === MAIN_MENU_OPTIONS.OPTIONS && !this.#isContinueButtonEnabled) {
-    //                 this.#selectedMenuOptions = MAIN_MENU_OPTIONS.NEW_GAME;
-    //                 return;
-    //             }
-    //             this.#selectedMenuOptions = MAIN_MENU_OPTIONS.CONTINUE;
-    //             return;
-    //         case DIRECTION.DOWN:
-    //             if(this.#selectedMenuOptions === MAIN_MENU_OPTIONS.OPTIONS){
-    //                 return;
-    //             }
-    //             if(this.#selectedMenuOptions === MAIN_MENU_OPTIONS.CONTINUE){
-    //                 this.#selectedMenuOptions = MAIN_MENU_OPTIONS.OPTIONS
-    //                 return;
-    //             }
-    //             if (this.#selectedMenuOptions === MAIN_MENU_OPTIONS.NEW_GAME && !this.#isContinueButtonEnabled) {
-    //                 this.#selectedMenuOptions = MAIN_MENU_OPTIONS.OPTIONS;
-    //                 return;
-    //             }
-    //             this.#selectedMenuOptions = MAIN_MENU_OPTIONS.CONTINUE
-    //             return;
+    #updateSelectedMenuOptionInput(direction) {
+        switch(direction) {
+            case DIRECTION.UP:
+                if (this.#selectedMenuOptions === MAIN_MENU_OPTIONS.NEWGAME) {
+                    return;
+                }
+                if (this.#selectedMenuOptions === MAIN_MENU_OPTIONS.CONTINUE) {
+                    this.#selectedMenuOptions = MAIN_MENU_OPTIONS.NEW_GAME;
+                    return;
+                }
+                if (this.#selectedMenuOptions === MAIN_MENU_OPTIONS.OPTIONS && !this.#isContinueButtonEnabled) {
+                    this.#selectedMenuOptions = MAIN_MENU_OPTIONS.NEW_GAME;
+                    return;
+                }
+                this.#selectedMenuOptions = MAIN_MENU_OPTIONS.CONTINUE;
+                return;
+            case DIRECTION.DOWN:
+                if(this.#selectedMenuOptions === MAIN_MENU_OPTIONS.OPTIONS){
+                    return;
+                }
+                if(this.#selectedMenuOptions === MAIN_MENU_OPTIONS.CONTINUE){
+                    this.#selectedMenuOptions = MAIN_MENU_OPTIONS.OPTIONS
+                    return;
+                }
+                if (this.#selectedMenuOptions === MAIN_MENU_OPTIONS.NEW_GAME && !this.#isContinueButtonEnabled) {
+                    this.#selectedMenuOptions = MAIN_MENU_OPTIONS.OPTIONS;
+                    return;
+                }
+                this.#selectedMenuOptions = MAIN_MENU_OPTIONS.CONTINUE
+                return;
 
-    //         case DIRECTION.LEFT:
-    //         case DIRECTION.RIGHT:
-    //         case DIRECTION.NONE:
-    //             return;
-    //         default:
-    //             this.#selectedMenuOptions = MAIN_MENU_OPTIONS.NEW_GAME
-    //             break;
-    //     }
-    // }
+            case DIRECTION.LEFT:
+            case DIRECTION.RIGHT:
+            case DIRECTION.NONE:
+                return;
+            default:
+                this.#selectedMenuOptions = MAIN_MENU_OPTIONS.NEW_GAME
+                break;
+        }
+    }
+
+
     
 
 }
