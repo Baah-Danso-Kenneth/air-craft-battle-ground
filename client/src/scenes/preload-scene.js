@@ -9,7 +9,7 @@ export class PreloadScene extends Phaser.Scene {
 
   create() {
     this.#createAnimations();
-    this.scene.start('GameScene');
+    this.scene.start('NftScene');
   }
 
   #createAnimations() {
