@@ -1,7 +1,8 @@
+import { OPTION_TEXT_STYLE, WELCOME_TEXT_STYLE } from "../objects/content/text-font-style";
 import { NineSlice } from "../objects/ui/nine-slice";
 
 const PLAYER_INPUT_CURSOR_POSITION = Object.freeze({
-    x:150,
+    x:40,
     y:41
 });
 
@@ -41,7 +42,7 @@ export class WelcomeScene extends Phaser.Scene {
         this.#background = this.add.tileSprite(0,0, 1024, 576, 'star_bg_s3').setOrigin(0,0)
         // this.add.image(0,0,'star_bg_s3').setAlpha(1);
         const renderedText = "Spacecraft war".toUpperCase();
-        const bannerText = this.add.text(0, 10, renderedText);
+        const bannerText = this.add.text(0, 10, renderedText, WELCOME_TEXT_STYLE);
         bannerText.setOrigin(0.5, 0);
         bannerText.setX(this.game.config.width / 2);
     
@@ -60,17 +61,17 @@ export class WelcomeScene extends Phaser.Scene {
             });
 
     
-        const menuBgWidth = 500;
+        const menuBgWidth = 300;
     
         
         const menuBgContainer = this.#nineSliceMenu.createNineSliceContainer(this, menuBgWidth, 200);
     
-        const newGameText = this.add.text(menuBgWidth / 2, 40, 'New Game').setOrigin(0.5);
-        const continueGameText = this.add.text(menuBgWidth / 2, 90, 'Continue').setOrigin(0.5);
+        const newGameText = this.add.text(menuBgWidth / 2, 40, 'New Game', OPTION_TEXT_STYLE).setOrigin(0.5);
+        const continueGameText = this.add.text(menuBgWidth / 2, 90, 'Continue', OPTION_TEXT_STYLE).setOrigin(0.5);
         if (!this.#isContinueButtonEnabled) {
             continueGameText.setAlpha(0.5);
         }
-        const optionGameText = this.add.text(menuBgWidth / 2, 140, 'Options').setOrigin(0.5);
+        const optionGameText = this.add.text(menuBgWidth / 2, 140, 'Options', OPTION_TEXT_STYLE).setOrigin(0.5);
     
         const menuContainer = this.add.container(0, 0, [menuBgContainer, newGameText, continueGameText, optionGameText]);
         menuContainer.setPosition(this.scale.width / 2 - menuBgWidth / 2, 300);
