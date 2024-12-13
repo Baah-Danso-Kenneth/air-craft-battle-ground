@@ -19,6 +19,16 @@
       },
       {
         "type": "image",
+        "key": "global",
+        "url": "global.png"
+      },
+      {
+        "type": "image",
+        "key": "glassPanel",
+        "url": "glassPanel_green.png"
+      },
+      {
+        "type": "image",
         "key": "player_ship1",
         "url": "player_ship1.png"
       },
@@ -57,6 +67,16 @@
         "type": "image",
         "key": "green_bg",
         "url": "green_bg.png"
+      },
+      {
+        "type": "image",
+        "key": "cursor_white",
+        "url": "cursor_white.png"
+      },
+      {
+        "type": "image",
+        "key": "star_bg_s3",
+        "url": "star-bg-s3.png"
       },
       {
         "type": "image",
