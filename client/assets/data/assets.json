@@ -75,6 +75,11 @@
       },
       {
         "type": "image",
+        "key": "purple_bg",
+        "url": "default_purple_bg.png"
+      },
+      {
+        "type": "image",
         "key": "star_bg_s3",
         "url": "star-bg-s3.png"
       },
