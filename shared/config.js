@@ -45,5 +45,6 @@ export const MAIN_MENU_OPTIONS = Object.freeze({
     LOGIN:'LOGIN',
     CONTINUE:'CONTINUE',
     OPTIONS: 'OPTIONS',
-    NEWGAME:'NEWGAME'
+    NEWGAME:'NEWGAME',
+    START_GAME: 'START_GAME'
 })

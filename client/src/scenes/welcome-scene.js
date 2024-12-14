@@ -39,8 +39,6 @@ export class WelcomeScene extends Phaser.Scene {
     create() {
        
 
-        // this.#selectedMenuOptions = MAIN_MENU_OPTIONS.NEW_GAME;
-        // this.#isContinueButtonEnabled = false;
         this.#background = this.add.tileSprite(0,0, 1024, 576, 'star_bg_s3').setOrigin(0,0)
         // this.add.image(0,0,'star_bg_s3').setAlpha(1);
         const renderedText = "Spacecraft war".toUpperCase();
@@ -180,8 +178,4 @@ export class WelcomeScene extends Phaser.Scene {
                 break;
         }
     }
-
-
-    
-
 }
