@@ -18,6 +18,7 @@ export class Player extends Phaser.GameObjects.Container {
   #healthComponent
   #colliderComponent
 
+
   constructor(scene, eventBusComponent) {
     super(scene, scene.scale.width / 2, scene.scale.height - 95, []);
     this.#eventBusComponent = eventBusComponent
@@ -52,10 +53,10 @@ export class Player extends Phaser.GameObjects.Container {
         flipY: false,
         lifeSpan:CONFIG.PLAYER_BULLET_LIFESPAN,
         interval: CONFIG.PLAYER_BULLET_INTERVAL,
-      })
+      }, this.#eventBusComponent)
 
       this.#healthComponent = new HealthComponent(CONFIG.PLAYER_HEALTH)
-      this.#colliderComponent = new ColliderComponent(this.#healthComponent)
+      this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent)
       this.#hide()
 
       this.#eventBusComponent.on(CONFIG.CUSTOM_EVENTS.PLAYER_SPAWN, this.#spawn, this)

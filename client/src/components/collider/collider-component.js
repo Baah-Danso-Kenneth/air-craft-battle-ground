@@ -1,8 +1,13 @@
+import * as CONFIG from '../../../../shared/config';
+
+
 export class ColliderComponent{
     #healthComponent
+    #eventBusComponent
 
-    constructor(healthComponent){
+    constructor(healthComponent, eventBusComponent){
         this.#healthComponent = healthComponent
+        this.#eventBusComponent = eventBusComponent
     }
 
     collideWithEnemyShip(){
@@ -17,5 +22,6 @@ export class ColliderComponent{
             return
         }
         this.#healthComponent.hit()
+        this.#eventBusComponent.emit(CONFIG.CUSTOM_EVENTS.SHIP_HIT)
     }
 }
