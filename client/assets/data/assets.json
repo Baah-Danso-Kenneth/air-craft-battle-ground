@@ -193,7 +193,7 @@
       {
         "type": "audio",
         "key": "bg",
-        "url": "space_asteroids.wav"
+        "url": "bgMusic.mp3"
       }
     ]
   }
