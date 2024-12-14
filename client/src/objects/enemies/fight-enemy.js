@@ -76,14 +76,13 @@ export class FightEnemy extends Phaser.GameObjects.Container{
         flipY: true,
         lifeSpan:CONFIG.ENEMY_FIGHTER_BULLET_LIFESPAN,
         interval: CONFIG.PLAYER_BULLET_INTERVAL,
-    })
+    }, this.#eventBusComponent)
 
     this.#verticalMovementComponent = new VerticalMovementComponent(
       this,
        this.#inputComponent, CONFIG.ENEMY_FIGHTER_MOVEMENT_VERTICAL_VELOCITY)
-
        this.#healthComponent = new HealthComponent(CONFIG.ENEMY_FIGHTER_HEALTH)
-       this.#colliderComponent = new ColliderComponent(this.#healthComponent)
+       this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent)
        this.#eventBusComponent.emit(CONFIG.CUSTOM_EVENTS.ENEMY_INIT, this)
        this.#isInitialized = true
   }

@@ -1,15 +1,19 @@
+import * as CONFIG from '../../../../shared/config';
+
+
 export class WeaponComponent{
     #gameObject;
     #inputComponent;
     #bulletGroup
     #bulletConfig
     #fireBulletInterval
-    constructor(gameObject, inputComponent, bulletConfig){
+    #eventBusComponent
+    constructor(gameObject, inputComponent, bulletConfig, eventBusComponent){
         this.#gameObject = gameObject
         this.#inputComponent = inputComponent
         this.#bulletConfig = bulletConfig
-
-
+        this.#eventBusComponent = eventBusComponent
+        this.#fireBulletInterval = 0;
 
         this.#bulletGroup = this.#gameObject.scene.physics.add.group({
             name: `bullets-${Phaser.Math.RND.uuid()}`,
@@ -60,6 +64,7 @@ export class WeaponComponent{
           bullet.play('bullet')
 
           this.#fireBulletInterval = this.#bulletConfig.interval
+          this.#eventBusComponent.emit(CONFIG.CUSTOM_EVENTS.SHIP_SHOOT)
           
         }
       }
