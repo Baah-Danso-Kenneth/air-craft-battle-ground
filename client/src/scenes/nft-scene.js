@@ -1,9 +1,43 @@
+import { MAIN_MENU_OPTIONS } from "../../../shared/config";
+import { OPTION_TEXT_STYLE, START_GAME_STYLE } from "../objects/content/text-font-style";
+import { NineSlice } from "../objects/ui/nine-slice";
+import { Controls } from "../utils/controls";
+import { DIRECTION } from "../utils/direction";
+
 export class NftScene extends Phaser.Scene {
+    #background;
+    #startGame;
+    #controls
+    #nineSliceMenu 
+
     constructor() {
         super({ key: 'NftScene' });
     }
 
+    init(){
+        this.#nineSliceMenu = new NineSlice({
+            cornerCutSize:32,
+            textureManager: this.sys.textures,
+            assetKey: 'glassPanel'
+        });
+
+        this.#startGame = MAIN_MENU_OPTIONS.START_GAME
+    }
+
     create() {
+        this.#background = this.add.tileSprite(0,0, 1024, 576, 'purple_bg').setOrigin(0,0)
+        this.add.text(350, 30, 'nft ship collection', OPTION_TEXT_STYLE)
+
+        const menuBgWidth = 200;
+        const menuBgContainer = this.#nineSliceMenu.createNineSliceContainer(this, menuBgWidth, 70);
+
+        const startGameText = this.add.text(menuBgWidth / 2, 40, 'start game', 
+            START_GAME_STYLE
+        ).setOrigin(0.5);
+        const menuContainer = this.add.container(0,0, [menuBgContainer, startGameText]);
+        menuContainer.setPosition(this.scale.width /2 - menuBgWidth / 2, 475);
+
+
         const rows = 3; 
         const cols = 3; 
         const cellWidth = 100;
@@ -16,7 +50,7 @@ export class NftScene extends Phaser.Scene {
         const startX = (this.cameras.main.width - gridWidth) / 2;
         const startY = (this.cameras.main.height - gridHeight) / 2;
 
-        const shipKeys = ['player_ship', 'player_ship1', 'player_ship2', 'player_ship3', 'player_ship4', 'player_ship5', 'player_ship6'];
+        const shipKeys = ['player_ship', 'player_ship1', 'player_ship2', 'player_ship3', 'player_ship4', 'player_ship5', 'player_ship6','',''];
 
         // Loop to create a 3x3 grid (but stop at 7 ships)
         let index = 0;
@@ -36,5 +70,33 @@ export class NftScene extends Phaser.Scene {
                 index++; // Move to the next ship
             }
         }
+
+        this.#controls = new Controls(this)
+
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+            if (this.#startGame === MAIN_MENU_OPTIONS.START_GAME) {
+                this.scene.start('GameScene');
+                return;
+            }
+        });
     }
+
+    update(){
+        if(this.#controls.isInputLocked){
+            return;
+        }
+
+        const wasSpaceKeyPressed = this.#controls.wasSpaceKeyPressed();
+
+        if(wasSpaceKeyPressed){
+            this.cameras.main.fadeOut(500, 0,0,0);
+            this.#controls.lockInput=true;
+            return;
+        }
+
+    }
+
+
+
+
 }

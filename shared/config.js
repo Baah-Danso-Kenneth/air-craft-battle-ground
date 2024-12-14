@@ -44,5 +44,7 @@ export const CUSTOM_EVENTS = Object.freeze({
 export const MAIN_MENU_OPTIONS = Object.freeze({
     LOGIN:'LOGIN',
     CONTINUE:'CONTINUE',
-    OPTIONS: 'OPTIONS'
+    OPTIONS: 'OPTIONS',
+    NEWGAME:'NEWGAME',
+    START_GAME: 'START_GAME'
 })
