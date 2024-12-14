@@ -7,6 +7,7 @@ import { EventBusComponent } from "../components/events/event-bus-component";
 import { EnemyDestroyedComponent } from "../components/spawner/enemy-destroyed-component";
 import { Score } from "../objects/ui/score";
 import { Lives } from "../objects/ui/lives";
+import { AudioManager } from "../objects/audio-manager";
 
 export class GameScene extends Phaser.Scene{
     #background
@@ -99,6 +100,7 @@ export class GameScene extends Phaser.Scene{
 
      new Score(this, eventComponent)
      new Lives(this,eventComponent)
+     new AudioManager(this,eventComponent)
 
     }
     
