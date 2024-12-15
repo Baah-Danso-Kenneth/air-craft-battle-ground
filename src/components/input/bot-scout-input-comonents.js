@@ -6,8 +6,6 @@ export class BotScoutInputComponent extends InputComponent {
     #gameObject;
     #startX;
     #maxMovement;
-
-
     constructor(gameObject){
         super();
         this.#gameObject = gameObject
@@ -16,6 +14,10 @@ export class BotScoutInputComponent extends InputComponent {
         this._down=true
         this._left=false
         this._right=true
+    }
+
+    set startX(val){
+        this.#startX  = val;
     }
 
     update(){

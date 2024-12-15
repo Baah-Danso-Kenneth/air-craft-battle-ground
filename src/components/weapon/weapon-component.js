@@ -65,8 +65,7 @@ export class WeaponComponent{
           // bullet.play('bullet')
 
           this.#fireBulletInterval = this.#bulletConfig.interval
-          this.#eventBusComponent.emit(CONFIG.CUSTOM_EVENTS.SHIP_SHOOT)
-          
+      
         }
       }
 

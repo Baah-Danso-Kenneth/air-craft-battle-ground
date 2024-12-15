@@ -3,6 +3,7 @@ import * as CONFIG from '../../../utils/config.js'
 import { VerticalMovementComponent } from "../../movements/vertical-movement.js";
 import { HorizontalMovementComponent } from "../../movements/horizontal-movement.js";
 import { BotFighterInputComponent } from "../../input/bot-fighter-scout-input.js";
+import { WeaponComponent } from "../../weapon/weapon-component.js";
 
 
 // import { VerticalMovementComponent } from "../../components/movements/vertical-component.js";
@@ -22,6 +23,7 @@ export class FightEnemy extends Phaser.GameObjects.Container{
   #colliderComponent
   #eventBusComponent
   #isInitialized
+  #weaponComponent
 
 
   constructor(scene,x,y) {
@@ -57,6 +59,16 @@ export class FightEnemy extends Phaser.GameObjects.Container{
          CONFIG.ENEMY_FIGHTER_MOVEMENT_VERTICAL_VELOCITY
         )
 
+        
+    this.#weaponComponent = new WeaponComponent(this, this.#inputComponent, {
+        maxCount: CONFIG.ENEMY_FIGHTER_BULLET_MAX_COUNT,
+        yOffset: 70,
+        speed:CONFIG.ENEMY_FIGHTER_BULLET_SPEED,
+        flipY: true,
+        lifeSpan:CONFIG.ENEMY_FIGHTER_BULLET_LIFESPAN,
+        interval: CONFIG.ENEMY_FIGHTER_BULLET_INTERVAL,
+    })
+
     this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
     this.once(Phaser.GameObjects.Events.DESTROY, ()=>{
         this.scene.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);
@@ -68,6 +80,7 @@ export class FightEnemy extends Phaser.GameObjects.Container{
   update(ts,dt){
     this.#inputComponent.update();
     this.#verticalMovementComponent.update()
+    this.#weaponComponent.update(dt)
   }
 
 }

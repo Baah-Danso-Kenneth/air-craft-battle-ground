@@ -1,6 +1,7 @@
 import { KeyboardInputComponent } from "../input/keyboard-component.js";
 import * as CONFIG from '../../utils/config.js'
 import { HorizontalMovementComponent } from "../movements/horizontal-movement.js";
+import { WeaponComponent } from "../weapon/weapon-component.js";
 // import { WeaponComponent } from "../components/weapon/weapon-component.js";
 // import { HealthComponent } from "../components/health/health-component.js";
 // import { ColliderComponent } from "../components/collider/collider-component.js";
@@ -58,14 +59,14 @@ export class Player extends Phaser.GameObjects.Container {
       );
 
 
-      // this.#weaponComponent = new WeaponComponent(this, this.#keyboardInputComponent,{
-      //   maxCount: CONFIG.PLAYER_BULLET_MAX_COUNT,
-      //   yOffset: -70,
-      //   speed:CONFIG.PLAYER_BULLET_SPEED,
-      //   flipY: false,
-      //   lifeSpan:CONFIG.PLAYER_BULLET_LIFESPAN,
-      //   interval: CONFIG.PLAYER_BULLET_INTERVAL,
-      // }, this.#eventBusComponent)
+      this.#weaponComponent = new WeaponComponent (this, this.#keyboardInputComponent,{
+        maxCount: CONFIG.PLAYER_BULLET_MAX_COUNT,
+        yOffset: -70,
+        speed:CONFIG.PLAYER_BULLET_SPEED,
+        flipY: false,
+        lifeSpan:CONFIG.PLAYER_BULLET_LIFESPAN,
+        interval: CONFIG.PLAYER_BULLET_INTERVAL,
+      }, this.#eventBusComponent);
 
       // this.#healthComponent = new HealthComponent(CONFIG.PLAYER_HEALTH)
       // this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent)
@@ -114,7 +115,7 @@ export class Player extends Phaser.GameObjects.Container {
     // this.#playerShip.setFrame((CONFIG.PLAYER_HEALTH - this.#healthComponent.life).toString(10))
     this.#keyboardInputComponent.update();
     this.#horizontalMovementComponent.update()
-    // this.#weaponComponent.update(dt)
+    this.#weaponComponent.update(dt)
   }
 
   #hide(){
