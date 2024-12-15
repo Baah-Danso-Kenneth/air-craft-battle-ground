@@ -2,6 +2,8 @@ import { KeyboardInputComponent } from "../input/keyboard-component.js";
 import * as CONFIG from '../../utils/config.js'
 import { HorizontalMovementComponent } from "../movements/horizontal-movement.js";
 import { WeaponComponent } from "../weapon/weapon-component.js";
+import { HealthComponent } from "../health/health-component.js";
+import { ColliderComponent } from "../collider/collider-component.js";
 // import { WeaponComponent } from "../components/weapon/weapon-component.js";
 // import { HealthComponent } from "../components/health/health-component.js";
 // import { ColliderComponent } from "../components/collider/collider-component.js";
@@ -68,8 +70,9 @@ export class Player extends Phaser.GameObjects.Container {
         interval: CONFIG.PLAYER_BULLET_INTERVAL,
       }, this.#eventBusComponent);
 
-      // this.#healthComponent = new HealthComponent(CONFIG.PLAYER_HEALTH)
-      // this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent)
+      this.#healthComponent = new HealthComponent(CONFIG.PLAYER_HEALTH)
+      this.#colliderComponent = new ColliderComponent(this.#healthComponent)
+
       // this.#hide()
 
       // this.#eventBusComponent.on(CONFIG.CUSTOM_EVENTS.PLAYER_SPAWN, this.#spawn, this)
@@ -100,19 +103,13 @@ export class Player extends Phaser.GameObjects.Container {
   update(ts,dt){
     if(!this.active){
       return;
+    }
+
+    if(this.#healthComponent.isDead){
+      this.setActive(false);
+      this.setVisible(false)
   }
 
-  //   if(this.#healthComponent.isDead){
-  //     this.#hide()
-  //     this.setVisible(true)
-
-  //     // this.#playerShip.play('explosion');
-
-  //     this.#eventBusComponent.emit(CONFIG.CUSTOM_EVENTS.PLAYER_DESTROYED)
-  //     return;
-  // }
-
-    // this.#playerShip.setFrame((CONFIG.PLAYER_HEALTH - this.#healthComponent.life).toString(10))
     this.#keyboardInputComponent.update();
     this.#horizontalMovementComponent.update()
     this.#weaponComponent.update(dt)

@@ -21,81 +21,24 @@ export class GameScene extends Phaser.Scene{
 
 
         const player = new Player(this, eventBusComponent)
-        new ScoutEnemy(this, this.scale.width / 2, 0)
-        new FightEnemy(this, this.scale.width / 2, 0)
-        // const scoutSpawner = new EnemySpawnerComponent(
-        //     this,
-        //     ScoutEnemy,
-        //     {
-        //         interval: CONFIG.ENEMY_SCOUT_GROUP_SPAWN_INTERVAL,
-        //         spawnAt: CONFIG.ENEMY_SCOUT_GROUP_SPAWN_START,
-        //     },
-        //     eventBusComponent
-        // );
+        const enemySpawner = new ScoutEnemy(this, this.scale.width / 2, 0)
+        const enemyFighter = new FightEnemy(this, this.scale.width / 2, 0)
 
-        // const fightherSpawer = new EnemySpawnerComponent(
-        //     this,
-        //     FightEnemy,
-        //     {
-        //         interval: CONFIG.ENEMY_FIGHTER_GROUP_SPAWN_INTERVAL,
-        //         spawnAt: CONFIG.ENEMY_FIGHTER_GROUP_SPAWN_START,
-        //     },
-        //     eventBusComponent
-        //  );
+        this.physics.add.overlap(player, enemyFighter, (playerGameObject, enemyGameObject)=>{
+            playerGameObject.colliderComponent.collideWithEnemyShip();
+            enemyGameObject.colliderComponent.collideWithEnemyShip();
 
-    //      this.physics.add.overlap(player, scoutSpawner.phaserGroup,(playerGameObject, enemyGameObject)=>{
-    //         if(!playerGameObject.active || !enemyGameObject.active){
-    //            return
-    //      }
-    
-    //         playerGameObject.colliderComponent.collideWithEnemyShip();
-    //         enemyGameObject.colliderComponent.collideWithEnemyShip();
-    
-    //      })
-    
-    //      this.physics.add.overlap(player, fightherSpawer.phaserGroup,(playerGameObject, enemyGameObject)=>{
-    //         if(!playerGameObject.active || !enemyGameObject.active){
-    //            return
-    //          }
-             
-    //          playerGameObject.colliderComponent.collideWithEnemyShip();
-    //          enemyGameObject.colliderComponent.collideWithEnemyShip();
-             
-    //       })
-          
-          
-    //       eventBusComponent.on(CONFIG.CUSTOM_EVENTS.ENEMY_INIT, (gameObject)=>{
-    //          if(gameObject.constructor.name !== 'FightEnemy'){
-    //             return;
-    //          }
-             
-    //          this.physics.add.overlap(player, gameObject.weaponGameObjectGroup,(playerGameObject, projectGameTileObject)=>{
-    //             if(!playerGameObject.active || !projectGameTileObject.active){
-    //             return
-    //         }
-    
-    //          gameObject.weaponComponent.destroyBullet(projectGameTileObject)
-    //          playerGameObject.colliderComponent.collideWithEnemyProjectile();
-             
-    //       })
-    //    })
-       
-        //  this.physics.add.overlap(scoutSpawner.phaserGroup, player.weaponGameObjectGroup,(enemyGameObject, projectGameTileObject)=>{
-        //   if(!enemyGameObject.active || !projectGameTileObject.active){
-        //      return
-        //   }
-        //     player.weaponComponent.destroyBullet(projectGameTileObject)
-        //     enemyGameObject.colliderComponent.collideWithEnemyProjectile();
-        //  })
+        });
 
-    
-        //  this.physics.add.overlap(fightherSpawer.phaserGroup, player.weaponGameObjectGroup,(enemyGameObject, projectGameTileObject)=>{
-        //   if(!enemyGameObject.active || !projectGameTileObject.active){
-        //      return
-        //  }
-        //     player.weaponComponent.destroyBullet(projectGameTileObject)
-        //     enemyGameObject.colliderComponent.collideWithEnemyProjectile();
-        //  })  
+        this.physics.add.overlap(player, enemyFighter.weaponGameObjectGroup, (enemyGameObject, projectileGameObject)=>{
+            console.log(enemyGameObject, projectileGameObject)
+        });
+
+        this.physics.add.overlap(enemyFighter, player.weaponGameObjectGroup, (enemyGameObject, projectileGameObject)=>{
+            console.log(enemyGameObject, projectileGameObject)
+        });
+
+
 
         new Score(this, eventBusComponent)
         

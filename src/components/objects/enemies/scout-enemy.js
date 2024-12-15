@@ -3,6 +3,8 @@ import * as CONFIG from '../../../utils/config.js'
 import { VerticalMovementComponent } from "../../movements/vertical-movement.js";
 import { HorizontalMovementComponent } from "../../movements/horizontal-movement.js";
 import { BotScoutInputComponent } from "../../input/bot-scout-input-comonents.js";
+import { HealthComponent } from "../../health/health-component.js";
+import { ColliderComponent } from "../../collider/collider-component.js";
 
 
 // import { VerticalMovementComponent } from "../../components/movements/vertical-component.js";
@@ -64,6 +66,9 @@ export class ScoutEnemy extends Phaser.GameObjects.Container{
              this.#inputComponent,
              CONFIG.ENEMY_SCOUT_MOVEMENT_HORIZONTAL_VELOCITY
             );
+            
+            this.#healthComponent = new HealthComponent(CONFIG.ENEMY_SCOUT_HEALTH)
+            this.#colliderComponent = new ColliderComponent(this.#healthComponent)
 
     this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
     this.once(Phaser.GameObjects.Events.DESTROY, ()=>{
