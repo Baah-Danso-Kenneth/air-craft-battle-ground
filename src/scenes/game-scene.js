@@ -21,8 +21,8 @@ export class GameScene extends Phaser.Scene{
 
 
         const player = new Player(this, eventBusComponent)
-        new ScoutEnemy(this)
-        new FightEnemy(this)
+        new ScoutEnemy(this, this.scale.width / 2, 0)
+        new FightEnemy(this, this.scale.width / 2, 0)
         // const scoutSpawner = new EnemySpawnerComponent(
         //     this,
         //     ScoutEnemy,

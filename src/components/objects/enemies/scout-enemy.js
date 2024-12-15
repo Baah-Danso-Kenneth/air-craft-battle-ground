@@ -50,12 +50,20 @@ export class ScoutEnemy extends Phaser.GameObjects.Container{
 
     this.add([this.#shipEngine,this.#enemyShip])
 
-    this.#inputComponent = new BotScoutInputComponent();
+    this.#inputComponent = new BotScoutInputComponent(this);
+
     this.#verticalMovementComponent = new VerticalMovementComponent(
         this,
          this.#inputComponent,
          CONFIG.ENEMY_SCOUT_MOVEMENT_VERTICAL_VELOCITY
         )
+
+
+        this.#horizontalMovementComponent = new HorizontalMovementComponent(
+            this,
+             this.#inputComponent,
+             CONFIG.ENEMY_SCOUT_MOVEMENT_HORIZONTAL_VELOCITY
+            );
 
     this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
     this.once(Phaser.GameObjects.Events.DESTROY, ()=>{
@@ -68,6 +76,7 @@ export class ScoutEnemy extends Phaser.GameObjects.Container{
   update(ts,dt){
     this.#inputComponent.update();
     this.#verticalMovementComponent.update()
+    this.#horizontalMovementComponent.update()
   }
 
 }

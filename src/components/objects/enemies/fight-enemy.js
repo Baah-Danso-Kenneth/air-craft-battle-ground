@@ -2,7 +2,6 @@ import { KeyboardInputComponent } from "../../input/keyboard-component.js";
 import * as CONFIG from '../../../utils/config.js'
 import { VerticalMovementComponent } from "../../movements/vertical-movement.js";
 import { HorizontalMovementComponent } from "../../movements/horizontal-movement.js";
-import { BotScoutInputComponent } from "../../input/bot-scout-input-comonents.js";
 import { BotFighterInputComponent } from "../../input/bot-fighter-scout-input.js";
 
 

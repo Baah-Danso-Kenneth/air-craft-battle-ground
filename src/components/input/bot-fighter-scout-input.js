@@ -11,3 +11,4 @@ export class BotFighterInputComponent extends InputComponent{
 
     }
 }
+
