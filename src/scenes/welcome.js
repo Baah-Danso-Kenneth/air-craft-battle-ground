@@ -1,5 +1,5 @@
 import { OPTION_TEXT_STYLE, WELCOME_TEXT_STYLE } from "../lib/text-style"
-import { NineSlice } from "../objects/nine-slice"
+import { NineSlice } from "../components/objects/nine-slice"
 import { MAIN_MENU_OPTIONS, PLAYER_INPUT_CURSOR_POSITION } from "../utils/config"
 import { Controls } from "../utils/controls"
 import { DIRECTION } from "../utils/direction"

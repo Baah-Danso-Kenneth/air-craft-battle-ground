@@ -16,8 +16,7 @@ export class PreloadScene extends Phaser.Scene{
         this.load.image('green_bg', '/assets/images/green_bg.png');
         this.load.image('attacker_1', '/assets/images/attacker_1.png');
         this.load.image('attack_ship2', '/assets/images/attack_ship2.png');
-    
-    
+        
     
         this.load.spritesheet('scout_engine', '/assets/images/scout_engine.png',{
           frameWidth: 64, 
@@ -45,7 +44,6 @@ export class PreloadScene extends Phaser.Scene{
         });
     
     
-    
         this.load.audio('bg', '/assets/audio/bgMusic.wav');
         this.load.audio('shot1', '/assets/audio/shot_1.wav');
         this.load.audio('explosion', '/assets/audio/explosion.wav');
@@ -65,6 +63,6 @@ export class PreloadScene extends Phaser.Scene{
       }
     
       create() {
-        this.scene.start('WelcomeScene');
+        this.scene.start('GameScene');
       }
 }
