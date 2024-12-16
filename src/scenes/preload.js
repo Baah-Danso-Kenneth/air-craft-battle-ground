@@ -43,6 +43,11 @@ export class PreloadScene extends Phaser.Scene{
           frameHeight: 64, 
         });
     
+        this.load.spritesheet('scout_destroy', '/assets/images/scout_destroy.png', {
+          frameWidth: 32, 
+          frameHeight: 32, 
+        });
+
     
         this.load.audio('bg', '/assets/audio/bgMusic.wav');
         this.load.audio('shot1', '/assets/audio/shot_1.wav');
@@ -63,6 +68,6 @@ export class PreloadScene extends Phaser.Scene{
       }
     
       create() {
-        this.scene.start('GameScene');
+        this.scene.start('WelcomeScene');
       }
 }

@@ -46,7 +46,14 @@ export class Player extends Phaser.GameObjects.Container {
       repeat: -1,    
     });
 
-  
+      scene.anims.create({
+        key: 'explosion',
+        frames: scene.anims.generateFrameNumbers('scout_destroy', { frames: [4, 5, 6, 7, 8, 9] }),
+        frameRate: 12,
+        repeat: 0,
+      });
+    
+
     this.#shipEngine.play('fireAnimation')
     
 
@@ -83,41 +90,66 @@ export class Player extends Phaser.GameObjects.Container {
     }, this)
   }
 
-  get weaponGameObjectGroup() {
-    return this.#weaponComponent.bulletGroup;
-  }
 
-  get weaponComponent() {
-    return this.#weaponComponent;
-  }
+    /** @type {ColliderComponent} */
+    get colliderComponent() {
+      return this.#colliderComponent;
+    }
+  
+    /** @type {HealthComponent} */
+    get healthComponent() {
+      return this.#healthComponent;
+    }
+  
+    /** @type {Phaser.GameObjects.Group} */
+    get weaponGameObjectGroup() {
+      return this.#weaponComponent.bulletGroup;
+    }
+  
+    /** @type {WeaponComponent} */
+    get weaponComponent() {
+      return this.#weaponComponent;
+    }
+  
+    /**
+     * @param {DOMHighResTimeStamp} ts
+     * @param {number} dt
+     * @returns {void}
+     */
+  
 
-  get colliderComponent() {
-    return this.#colliderComponent;
-  }
 
-  get healthComponent() {
-    return this.#healthComponent;
-  }
-
-
-  update(ts,dt){
-    if(!this.active){
+  update(ts, dt) {
+    if (!this.active) {
       return;
     }
+  
+  
+    if (this.#healthComponent.isDead) {
+      if (this.#playerShip.anims.currentAnim?.key !== 'explosion') {
+        this.#hide();
+        this.#playerShip.play('explosion');
+        console.log(this.#playerShip.play('explosion'))
+  
+  
+        this.#playerShip.once('animationcomplete', () => {
+          this.#playerShip.setVisible(false); 
+        });
+      }
+      return; 
+    }
 
-    if(this.#healthComponent.isDead){
-      this.setActive(false);
-      this.setVisible(false)
-  }
-
+    // this.#playerShip(CONFIG.PLAYER_HEALTH - this.#healthComponent.life).toString(10)
     this.#keyboardInputComponent.update();
-    this.#horizontalMovementComponent.update()
-    this.#weaponComponent.update(dt)
+    this.#horizontalMovementComponent.update();
+    this.#weaponComponent.update(dt);
   }
+  
 
   #hide(){
     this.setActive(false)
     this.setVisible(false)
+    this.#playerShip.setVisible(false)
     this.#shipEngine.setVisible(false)
     this.#keyboardInputComponent.lockInput = true
   }

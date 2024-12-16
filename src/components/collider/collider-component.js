@@ -1,10 +1,9 @@
 export class ColliderComponent{
     #healthComponent
-    #eventBusComponent
 
-    constructor(healthComponent, eventBusComponent){
+
+    constructor(healthComponent){
         this.#healthComponent = healthComponent
-        this.#eventBusComponent = eventBusComponent
     }
 
     collideWithEnemyShip(){
@@ -19,6 +18,5 @@ export class ColliderComponent{
             return
         }
         this.#healthComponent.hit()
-        // this.#eventBusComponent.emit(CONFIG.CUSTOM_EVENTS.SHIP_HIT)
     }
 }
