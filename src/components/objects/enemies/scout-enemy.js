@@ -1,10 +1,10 @@
-import { KeyboardInputComponent } from "../../input/keyboard-component.js";
-import * as CONFIG from '../../../utils/config.js'
-import { VerticalMovementComponent } from "../../movements/vertical-movement.js";
-import { HorizontalMovementComponent } from "../../movements/horizontal-movement.js";
-import { BotScoutInputComponent } from "../../input/bot-scout-input-comonents.js";
-import { HealthComponent } from "../../health/health-component.js";
-import { ColliderComponent } from "../../collider/collider-component.js";
+import * as CONFIG from '../../../utils/config';
+import { ColliderComponent } from '../../collider/collider-component';
+import { HealthComponent } from '../../health/health-component';
+import { BotScoutInputComponent } from '../../input/bot-scout-input-comonents.js';
+import { HorizontalMovementComponent } from '../../movements/horizontal-movement';
+import { VerticalMovementComponent } from '../../movements/vertical-movement.js';
+
 
 
 export class ScoutEnemy extends Phaser.GameObjects.Container{
@@ -29,17 +29,17 @@ export class ScoutEnemy extends Phaser.GameObjects.Container{
 
 
     this.#enemyShip = scene.add.image(0,0, 'attacker_1').setScale(0.3).setFlipY(true)
-    this.#shipEngine = scene.add.sprite(0, -55, 'scout_engine').setScale(2)
+    this.#shipEngine = scene.add.sprite(0,-55, 'scout_engine').setScale(2)
 
     scene.anims.create({
-        key: 'enemyFlames',
-        frames: scene.anims.generateFrameNumbers('scout_engine', {
-          start: 0, 
-          end: 3,   
-        }),
-        frameRate: 10,
-        repeat: -1,    
-      });
+      key: 'enemyFlames',
+      frames: scene.anims.generateFrameNumbers('scout_engine', {
+        start: 0, 
+        end: 3,   
+      }),
+      frameRate: 10,
+      repeat: -1,    
+    });
 
     this.#shipEngine.play('enemyFlames')
 
@@ -51,51 +51,41 @@ export class ScoutEnemy extends Phaser.GameObjects.Container{
     }, this)
   }
 
-    /** @type {ColliderComponent} */
-    get colliderComponent() {
-        return this.#colliderComponent;
-      }
-    
-      /** @type {HealthComponent} */
-      get healthComponent() {
-        return this.#healthComponent;
-      }
-    
-      /** @type {string} */
-      get shipAssetKey() {
-        return 'scout';
-      }
-    
-      /** @type {string} */
-      get shipDestroyedAnimationKey() {
-        return 'scout_destroy';
-      }
+  get colliderComponent() {
+    return this.#colliderComponent;
+  }
+
+  get healthComponent() {
+    return this.#healthComponent;
+  }
+
+  get shipAssetKey() {
+    return 'scout';
+  }
+
+  get shipDestroyedAnimationKey() {
+    return 'scout_destroy';
+  }
+
 
   init(eventBusComponent){
-    this.#eventBusComponent = eventBusComponent;
-
+    this.#eventBusComponent = eventBusComponent
     this.#inputComponent = new BotScoutInputComponent(this);
 
     this.#verticalMovementComponent = new VerticalMovementComponent(
+      this,
+       this.#inputComponent, CONFIG.ENEMY_SCOUT_MOVEMENT_VERTICAL_VELOCITY)
+
+       this.#horizontalMovementComponent = new HorizontalMovementComponent(
         this,
-         this.#inputComponent,
-         CONFIG.ENEMY_SCOUT_MOVEMENT_VERTICAL_VELOCITY
-        )
+         this.#inputComponent, CONFIG.ENEMY_SCOUT_MOVEMENT_HORIZONTAL_VELOCITY)
 
+      this.#healthComponent = new HealthComponent(CONFIG.ENEMY_SCOUT_HEALTH)
+      this.#colliderComponent = new ColliderComponent(this.#healthComponent, this.#eventBusComponent)
+      this.#eventBusComponent.emit(CONFIG.CUSTOM_EVENTS.ENEMY_INIT, this)
+      this.#isInitialized=true
 
-        this.#horizontalMovementComponent = new HorizontalMovementComponent(
-            this,
-             this.#inputComponent,
-             CONFIG.ENEMY_SCOUT_MOVEMENT_HORIZONTAL_VELOCITY
-            );
-            
-            this.#healthComponent = new HealthComponent(CONFIG.ENEMY_SCOUT_HEALTH)
-            this.#colliderComponent = new ColliderComponent(this.#healthComponent);
-
-            this.#eventBusComponent.emit(CONFIG.CUSTOM_EVENTS.ENEMY_INIT, this)
-            this.#isInitialized = true
   }
-
 
   reset(){
     this.setActive(true)
@@ -106,16 +96,20 @@ export class ScoutEnemy extends Phaser.GameObjects.Container{
     this.#horizontalMovementComponent.reset()
   }
 
-
   update(ts,dt){
-
     if(!this.#isInitialized){
-        return
+      return
     }
+
     if(!this.active){
-        return;
-      }
-      
+      return;
+  }
+  if(this.#healthComponent.isDead){
+      this.setActive(false)
+      this.setVisible(false)
+      this.#eventBusComponent.emit(CONFIG.CUSTOM_EVENTS.ENEMY_DESTROYED, this)
+
+  }
     this.#inputComponent.update();
     this.#verticalMovementComponent.update()
     this.#horizontalMovementComponent.update()

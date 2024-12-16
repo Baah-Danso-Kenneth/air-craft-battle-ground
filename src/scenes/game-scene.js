@@ -1,10 +1,11 @@
 import { EventBusComponent } from "../components/events/event-component";
-import { FightEnemy } from "../components/objects/enemies/fight-enemy";
+import { FighterEnemy } from "../components/objects/enemies/fight-enemy";
 import { ScoutEnemy } from "../components/objects/enemies/scout-enemy";
 import { Player } from "../components/objects/player";
+import { Lives } from "../components/objects/ui/lives";
 import { Score } from "../components/objects/ui/score";
+import { EnemyDestroyedComponent } from "../components/spawner/enemy-destroyed";
 import { EnemySpawnerComponent } from "../components/spawner/enemy-spawner-component";
-import { createEnemyFlamesAnimation } from "../lib/animations/animation";
 import * as CONFIG from '../utils/config';
 
 
@@ -30,13 +31,15 @@ export class GameScene extends Phaser.Scene{
         )
         const fightherSpawer = new EnemySpawnerComponent(
            this,
-           FightEnemy,
+           FighterEnemy,
            {
                interval: CONFIG.ENEMY_FIGHTER_GROUP_SPAWN_INTERVAL,
                spawnAt: CONFIG.ENEMY_FIGHTER_GROUP_SPAWN_START,
            },
            eventComponent
-        )
+        );
+
+        new EnemyDestroyedComponent(this, eventComponent);
      
         this.physics.add.overlap(player, scoutSpawer.phaserGroup,(playerGameObject, enemyGameObject)=>{
            if(!playerGameObject.active || !enemyGameObject.active){
@@ -60,7 +63,7 @@ export class GameScene extends Phaser.Scene{
          
          
          eventComponent.on(CONFIG.CUSTOM_EVENTS.ENEMY_INIT, (gameObject)=>{
-            if(gameObject.constructor.name !== 'FightEnemy'){
+            if(gameObject.constructor.name !== 'FighterEnemy'){
                return;
             }
             
@@ -76,8 +79,7 @@ export class GameScene extends Phaser.Scene{
       })
       
       
-      
-      
+    
         this.physics.add.overlap(scoutSpawer.phaserGroup, player.weaponGameObjectGroup,(enemyGameObject, projectGameTileObject)=>{
          if(!enemyGameObject.active || !projectGameTileObject.active){
             return
@@ -95,6 +97,7 @@ export class GameScene extends Phaser.Scene{
         })
    
         new Score(this, eventComponent)
+        new Lives(this, eventComponent)
 
    
        }
