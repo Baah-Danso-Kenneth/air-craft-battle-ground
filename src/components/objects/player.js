@@ -90,21 +90,33 @@ export class Player extends Phaser.GameObjects.Container {
     }, this)
   }
 
-  get weaponGameObjectGroup() {
-    return this.#weaponComponent.bulletGroup;
-  }
 
-  get weaponComponent() {
-    return this.#weaponComponent;
-  }
-
-  get colliderComponent() {
-    return this.#colliderComponent;
-  }
-
-  get healthComponent() {
-    return this.#healthComponent;
-  }
+    /** @type {ColliderComponent} */
+    get colliderComponent() {
+      return this.#colliderComponent;
+    }
+  
+    /** @type {HealthComponent} */
+    get healthComponent() {
+      return this.#healthComponent;
+    }
+  
+    /** @type {Phaser.GameObjects.Group} */
+    get weaponGameObjectGroup() {
+      return this.#weaponComponent.bulletGroup;
+    }
+  
+    /** @type {WeaponComponent} */
+    get weaponComponent() {
+      return this.#weaponComponent;
+    }
+  
+    /**
+     * @param {DOMHighResTimeStamp} ts
+     * @param {number} dt
+     * @returns {void}
+     */
+  
 
 
   update(ts, dt) {
@@ -112,7 +124,7 @@ export class Player extends Phaser.GameObjects.Container {
       return;
     }
   
-    // Handle death logic
+  
     if (this.#healthComponent.isDead) {
       if (this.#playerShip.anims.currentAnim?.key !== 'explosion') {
         this.#hide();
@@ -127,7 +139,7 @@ export class Player extends Phaser.GameObjects.Container {
       return; 
     }
 
-    this.#playerShip.setFrame((CONFIG.PLAYER_HEALTH - this.#healthComponent.life).toString(10))  
+    // this.#playerShip(CONFIG.PLAYER_HEALTH - this.#healthComponent.life).toString(10)
     this.#keyboardInputComponent.update();
     this.#horizontalMovementComponent.update();
     this.#weaponComponent.update(dt);

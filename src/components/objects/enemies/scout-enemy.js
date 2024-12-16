@@ -7,13 +7,6 @@ import { HealthComponent } from "../../health/health-component.js";
 import { ColliderComponent } from "../../collider/collider-component.js";
 
 
-// import { VerticalMovementComponent } from "../../components/movements/vertical-component.js";
-// import { HorizontalMovementComponent } from "../../components/movements/horizontal-movement.js";
-// import { ColliderComponent } from "../../components/collider/collider-component.js";
-// import { HealthComponent } from "../../components/health/health-component.js";
-
-
-
 export class ScoutEnemy extends Phaser.GameObjects.Container{
   #enemyShip
   #shipEngine
@@ -52,6 +45,35 @@ export class ScoutEnemy extends Phaser.GameObjects.Container{
 
     this.add([this.#shipEngine,this.#enemyShip])
 
+    this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
+    this.once(Phaser.GameObjects.Events.DESTROY, ()=>{
+        this.scene.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);
+    }, this)
+  }
+
+    /** @type {ColliderComponent} */
+    get colliderComponent() {
+        return this.#colliderComponent;
+      }
+    
+      /** @type {HealthComponent} */
+      get healthComponent() {
+        return this.#healthComponent;
+      }
+    
+      /** @type {string} */
+      get shipAssetKey() {
+        return 'scout';
+      }
+    
+      /** @type {string} */
+      get shipDestroyedAnimationKey() {
+        return 'scout_destroy';
+      }
+
+  init(eventBusComponent){
+    this.#eventBusComponent = eventBusComponent;
+
     this.#inputComponent = new BotScoutInputComponent(this);
 
     this.#verticalMovementComponent = new VerticalMovementComponent(
@@ -68,17 +90,32 @@ export class ScoutEnemy extends Phaser.GameObjects.Container{
             );
             
             this.#healthComponent = new HealthComponent(CONFIG.ENEMY_SCOUT_HEALTH)
-            this.#colliderComponent = new ColliderComponent(this.#healthComponent)
+            this.#colliderComponent = new ColliderComponent(this.#healthComponent);
 
-    this.scene.events.on(Phaser.Scenes.Events.UPDATE, this.update, this);
-    this.once(Phaser.GameObjects.Events.DESTROY, ()=>{
-        this.scene.events.off(Phaser.Scenes.Events.UPDATE, this.update, this);
-    }, this)
+            this.#eventBusComponent.emit(CONFIG.CUSTOM_EVENTS.ENEMY_INIT, this)
+            this.#isInitialized = true
   }
 
 
+  reset(){
+    this.setActive(true)
+    this.setVisible(true)
+    this.#healthComponent.reset()
+    this.#inputComponent.startX = this.x;
+    this.#verticalMovementComponent.reset()
+    this.#horizontalMovementComponent.reset()
+  }
+
 
   update(ts,dt){
+
+    if(!this.#isInitialized){
+        return
+    }
+    if(!this.active){
+        return;
+      }
+      
     this.#inputComponent.update();
     this.#verticalMovementComponent.update()
     this.#horizontalMovementComponent.update()
