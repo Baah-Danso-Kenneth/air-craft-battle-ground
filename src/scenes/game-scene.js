@@ -30,12 +30,14 @@ export class GameScene extends Phaser.Scene{
 
         });
 
-        this.physics.add.overlap(player, enemyFighter.weaponGameObjectGroup, (enemyGameObject, projectileGameObject)=>{
-            console.log(enemyGameObject, projectileGameObject)
+        this.physics.add.overlap(player, enemyFighter.weaponGameObjectGroup, (playerGameObject, projectileGameObject)=>{
+            enemyFighter.weaponComponent.destroyBullet(projectileGameObject)
+            playerGameObject.colliderComponent.collideWithEnemyProjectile();
         });
 
         this.physics.add.overlap(enemyFighter, player.weaponGameObjectGroup, (enemyGameObject, projectileGameObject)=>{
-            console.log(enemyGameObject, projectileGameObject)
+            player.weaponComponent.destroyBullet(projectileGameObject)
+            enemyGameObject.colliderComponent.collideWithEnemyProjectile();
         });
 
 
